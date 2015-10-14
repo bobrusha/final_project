@@ -10,14 +10,10 @@ import java.util.ArrayList;
 /**
  * Created by Aleksandra on 12.10.15.
  */
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
     private ArrayList<String> mDataset;
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
         public TextView mTextView;
 
         public ViewHolder(TextView v) {
@@ -26,18 +22,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         }
     }
 
-    public MyAdapter(ArrayList<String> myDataset) {
+    public ItemsAdapter(ArrayList<String> myDataset) {
         mDataset = myDataset;
     }
 
     @Override
-    public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
-        // create a new view
+    public ItemsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         TextView v = (TextView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.view_item, parent, false);
-        // set the view's size, margins, paddings and layout parameters
-
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
@@ -48,10 +40,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.mTextView.setText(mDataset.get(position));
-
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return mDataset.size();

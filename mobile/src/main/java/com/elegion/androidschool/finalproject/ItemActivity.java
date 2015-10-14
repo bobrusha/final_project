@@ -13,7 +13,7 @@ import com.elegion.androidschool.finalproject.db.DBOpenHelper;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class ItemActivity extends AppCompatActivity {
     private DBOpenHelper mDBHelper;
 
     private ItemsListFragment mItemsListFragment;
@@ -27,13 +27,14 @@ public class MainActivity extends AppCompatActivity {
 
         SQLiteDatabase db = mDBHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(Contract.ItemEntity.COLUMN_NAME, "qq");
-        long newRowId;
-        newRowId = db.insert(
-                Contract.ItemEntity.TABLE_NAME,
-                Contract.ItemEntity.COLUMN_DESCRIPTION,
-                values);
-
+        for (int i = 0; i < 5; ++i) {
+            values.put(Contract.ItemEntity.COLUMN_NAME, "" + i);
+            long newRowId;
+            newRowId = db.insert(
+                    Contract.ItemEntity.TABLE_NAME,
+                    Contract.ItemEntity.COLUMN_DESCRIPTION,
+                    values);
+        }
         db = mDBHelper.getReadableDatabase();
         String projection[] = {
                 Contract.ItemEntity._ID,
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             mStringArrayList.add(c.getString(columnIndex));
         }
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_items);
         mItemsListFragment = ItemsListFragment.newInstance(mStringArrayList);
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, mItemsListFragment)

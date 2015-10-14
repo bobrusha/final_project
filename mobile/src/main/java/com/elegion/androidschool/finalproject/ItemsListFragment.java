@@ -45,7 +45,7 @@ public class ItemsListFragment extends Fragment {
         mItemsListView.setHasFixedSize(false);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mItemsListView.setLayoutManager(mLayoutManager);
-        mItemsListView.setAdapter(new MyAdapter(mItemsArrayString));
+        mItemsListView.setAdapter(new ItemsAdapter(mItemsArrayString));
 
         return root;
     }
