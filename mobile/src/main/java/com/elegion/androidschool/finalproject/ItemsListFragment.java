@@ -1,7 +1,9 @@
 package com.elegion.androidschool.finalproject;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -47,6 +49,13 @@ public class ItemsListFragment extends Fragment {
         mItemsListView.setLayoutManager(mLayoutManager);
         mItemsListView.setAdapter(new ItemsAdapter(mItemsArrayString));
 
+        FloatingActionButton fab = (FloatingActionButton) root.findViewById(R.id.fab_add_new_item);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), CreateNewItemActivity.class));
+            }
+        });
         return root;
     }
 

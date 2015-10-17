@@ -13,7 +13,7 @@ import com.elegion.androidschool.finalproject.db.DBOpenHelper;
 
 import java.util.ArrayList;
 
-public class ItemActivity extends AppCompatActivity {
+public class ItemsActivity extends AppCompatActivity {
     private DBOpenHelper mDBHelper;
 
     private ItemsListFragment mItemsListFragment;
@@ -62,6 +62,7 @@ public class ItemActivity extends AppCompatActivity {
                 .replace(R.id.container, mItemsListFragment)
                 .commit();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
