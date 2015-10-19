@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class ListsActivity extends AppCompatActivity {
 
     private DBOpenHelper mDBHelper;
-    private ArrayList<String> mStringArrayList = new ArrayList<>();
+    private final ArrayList<String> mStringArrayList = new ArrayList<>();
     private ListsFragment mListsFragment;
 
 

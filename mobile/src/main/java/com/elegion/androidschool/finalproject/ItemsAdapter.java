@@ -11,10 +11,10 @@ import java.util.ArrayList;
  * Created by Aleksandra on 12.10.15.
  */
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
-    private ArrayList<String> mDataset;
+    private final ArrayList<String> mDataset;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView mTextView;
+        public final TextView mTextView;
 
         public ViewHolder(TextView v) {
             super(v);

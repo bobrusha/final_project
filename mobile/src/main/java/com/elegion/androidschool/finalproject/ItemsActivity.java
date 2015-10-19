@@ -17,7 +17,7 @@ public class ItemsActivity extends AppCompatActivity {
     private DBOpenHelper mDBHelper;
 
     private ItemsListFragment mItemsListFragment;
-    private ArrayList<String> mStringArrayList = new ArrayList<>();
+    private final ArrayList<String> mStringArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +55,7 @@ public class ItemsActivity extends AppCompatActivity {
         for (int i = 0; i < c.getCount(); ++i) {
             mStringArrayList.add(c.getString(columnIndex));
         }
+
 
         setContentView(R.layout.activity_items);
         mItemsListFragment = ItemsListFragment.newInstance(mStringArrayList);
