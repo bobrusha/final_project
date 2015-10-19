@@ -11,4 +11,7 @@
     <string name="create_new_list_dialog_positive_button">Save</string>
     <string name="create_new_list_dialog_negative_button">Cancel</string>
     <string name="create_new_list_dialog_title_field_hint">List name</string>
+
+    <!-- Creating new item -->
+    <string name="add_new_item_name_field_hint">Name</string>
 </resources>
