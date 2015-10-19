@@ -72,7 +72,8 @@ public class ListsFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: dialog for creating new list
+                CreateNewListDialog dialog = new CreateNewListDialog();
+                dialog.show(getFragmentManager(), "create_new_list");
             }
         });
         return root;
