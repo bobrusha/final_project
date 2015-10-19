@@ -14,6 +14,7 @@ public class CreateNewListDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.crete_new_list_dialog_title)
+                .setView(R.layout.view_add_new_list)
                 .setPositiveButton(R.string.create_new_list_dialog_positive_button, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

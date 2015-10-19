@@ -6,7 +6,9 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="title_activity_main">MainActivity</string>
 
+    <!-- Dialog for adding new shopping list -->
     <string name="crete_new_list_dialog_title">Create new list </string>
     <string name="create_new_list_dialog_positive_button">Save</string>
     <string name="create_new_list_dialog_negative_button">Cancel</string>
+    <string name="create_new_list_dialog_title_field_hint">List name</string>
 </resources>
