@@ -19,12 +19,20 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        final String SQL_CREATE_LIST_TABLE = "CREATE TABLE " + Contract.ListEntity.TABLE_NAME + " (" +
+                Contract.ListEntity._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                Contract.ListEntity.COLUMN_NAME + " TEXT UNIQUE NOT NULL, " +
+                Contract.ListEntity.COLUMN_DESCRIPTION + " TEXT " +
+                " );";
+
         final String SQL_CREATE_ITEM_TABLE = "CREATE TABLE " + Contract.ItemEntity.TABLE_NAME + " (" +
                 Contract.ItemEntity._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 Contract.ItemEntity.COLUMN_NAME + " TEXT UNIQUE NOT NULL, " +
-                Contract.ItemEntity.COLUMN_DESCRIPTION + " TEXT " +
+                Contract.ItemEntity.COLUMN_DESCRIPTION + " TEXT, " +
+                Contract.ItemEntity.COLUMN_LIST_ID + " INTEGER REFERENCES item" +
                 " );";
 
+        db.execSQL(SQL_CREATE_LIST_TABLE);
         db.execSQL(SQL_CREATE_ITEM_TABLE);
     }
 

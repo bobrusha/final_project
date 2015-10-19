@@ -27,9 +27,17 @@ public class Contract {
         public static final String TABLE_NAME = "item";
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_DESCRIPTION = "description";
+        public static final String COLUMN_LIST_ID = "list_id";
 
         public static Uri buildItemUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
+    }
+
+    public static class ListEntity implements BaseColumns {
+        public static final String TABLE_NAME = "list";
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_DESCRIPTION = "description";
+
     }
 }

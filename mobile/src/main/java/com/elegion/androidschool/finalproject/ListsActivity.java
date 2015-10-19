@@ -30,18 +30,10 @@ public class ListsActivity extends AppCompatActivity {
         SQLiteDatabase db = mDBHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        for (int i = 0; i < 5; ++i) {
-            values.put(Contract.ItemEntity.COLUMN_NAME, "" + i);
-            long newRowId;
-            newRowId = db.insert(
-                    Contract.ItemEntity.TABLE_NAME,
-                    Contract.ItemEntity.COLUMN_DESCRIPTION,
-                    values);
-        }
         db = mDBHelper.getReadableDatabase();
         String projection[] = {
-                Contract.ItemEntity._ID,
-                Contract.ItemEntity.COLUMN_NAME
+                Contract.ListEntity._ID,
+                Contract.ListEntity.COLUMN_NAME
         };
         Cursor c = db.query(
                 Contract.ItemEntity.TABLE_NAME,
@@ -87,5 +79,9 @@ public class ListsActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public DBOpenHelper getDBHelper() {
+        return mDBHelper;
     }
 }
