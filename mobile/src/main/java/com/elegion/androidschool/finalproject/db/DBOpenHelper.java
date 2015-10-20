@@ -10,11 +10,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBOpenHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "shopping_list.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
-    //TODO: replace null to DB_NAME
     public DBOpenHelper(Context context) {
-        super(context, null, null, DB_VERSION);
+        super(context, DB_NAME, null, DB_VERSION);
     }
 
     @Override
@@ -29,7 +28,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
                 Contract.ItemEntity._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 Contract.ItemEntity.COLUMN_NAME + " TEXT UNIQUE NOT NULL, " +
                 Contract.ItemEntity.COLUMN_DESCRIPTION + " TEXT, " +
-                Contract.ItemEntity.COLUMN_LIST_ID + " INTEGER REFERENCES item" +
+                Contract.ItemEntity.COLUMN_LIST_ID + " INTEGER REFERENCES list" +
                 " );";
 
         db.execSQL(SQL_CREATE_LIST_TABLE);
