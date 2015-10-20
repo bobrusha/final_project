@@ -2,21 +2,21 @@ package com.elegion.androidschool.finalproject;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.ContentValues;
 import android.content.DialogInterface;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.EditText;
 
-import com.elegion.androidschool.finalproject.db.Contract;
+import com.elegion.androidschool.finalproject.model.ShoppingList;
+import com.pushtorefresh.storio.sqlite.StorIOSQLite;
 
 /**
  * Created by Aleksandra on 19.10.15.
  */
 public class CreateNewListDialog extends DialogFragment {
     private EditText nameField;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -31,11 +31,16 @@ public class CreateNewListDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ListsActivity listsActivity = (ListsActivity) getActivity();
-                        SQLiteDatabase db = listsActivity.getDBHelper().getWritableDatabase();
-                        ContentValues cv = new ContentValues();
-                        cv.put(Contract.ListEntity.COLUMN_NAME, nameField.getText().toString());
-                        cv.putNull(Contract.ListEntity.COLUMN_DESCRIPTION);
-                        db.insert(Contract.ListEntity.TABLE_NAME, null, cv);
+                        StorIOSQLite db = listsActivity.getStorIOSQLite();
+
+                        ShoppingList shoppingList = new ShoppingList(nameField.getText().toString());
+                        shoppingList.setId(1);
+                        shoppingList.setDescription("qqqq");
+
+                        db.put()
+                                .object(shoppingList)
+                                .prepare()
+                                .executeAsBlocking();
                     }
                 })
                 .setNegativeButton(R.string.create_new_list_dialog_negative_button, new DialogInterface.OnClickListener() {

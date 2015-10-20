@@ -1,21 +1,28 @@
 package com.elegion.androidschool.finalproject;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.elegion.androidschool.finalproject.db.Contract;
 import com.elegion.androidschool.finalproject.db.DBOpenHelper;
+import com.elegion.androidschool.finalproject.loader.ListsLoader;
+import com.elegion.androidschool.finalproject.model.ShoppingList;
+import com.elegion.androidschool.finalproject.model.ShoppingListStorIOSQLiteDeleteResolver;
+import com.elegion.androidschool.finalproject.model.ShoppingListStorIOSQLiteGetResolver;
+import com.elegion.androidschool.finalproject.model.ShoppingListStorIOSQLitePutResolver;
+import com.pushtorefresh.storio.sqlite.SQLiteTypeMapping;
+import com.pushtorefresh.storio.sqlite.StorIOSQLite;
+import com.pushtorefresh.storio.sqlite.impl.DefaultStorIOSQLite;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListsActivity extends AppCompatActivity {
 
     private DBOpenHelper mDBHelper;
+    private StorIOSQLite mStorIOSQLite;
     private final ArrayList<String> mStringArrayList = new ArrayList<>();
     private ListsFragment mListsFragment;
 
@@ -26,31 +33,21 @@ public class ListsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lists);
 
         mDBHelper = new DBOpenHelper(getApplicationContext());
+        mStorIOSQLite = DefaultStorIOSQLite.builder()
+                .sqliteOpenHelper(mDBHelper)
+                .addTypeMapping(ShoppingList.class, SQLiteTypeMapping.<ShoppingList>builder()
+                        .putResolver(new ShoppingListStorIOSQLitePutResolver())
+                        .getResolver(new ShoppingListStorIOSQLiteGetResolver())
+                        .deleteResolver(new ShoppingListStorIOSQLiteDeleteResolver())
+                        .build())
+                .build();
 
-        SQLiteDatabase db = mDBHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
+        final List<ShoppingList> shoppingLists = new ListsLoader(this).loadInBackground();
 
-        db = mDBHelper.getReadableDatabase();
-        String projection[] = {
-                Contract.ListEntity._ID,
-                Contract.ListEntity.COLUMN_NAME
-        };
-        Cursor c = db.query(
-                Contract.ItemEntity.TABLE_NAME,
-                projection,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-
-        c.moveToFirst();
-        int columnIndex = c.getColumnIndex(Contract.ItemEntity.COLUMN_NAME);
-        for (int i = 0; i < c.getCount(); ++i) {
-            mStringArrayList.add(c.getString(columnIndex));
+        for (ShoppingList l : shoppingLists) {
+            mStringArrayList.add(l.getName());
+            Log.v("qq", l.getName());
         }
-
         setContentView(R.layout.activity_lists);
         mListsFragment = ListsFragment.newInstance(mStringArrayList);
         getFragmentManager().beginTransaction()
@@ -83,5 +80,9 @@ public class ListsActivity extends AppCompatActivity {
 
     public DBOpenHelper getDBHelper() {
         return mDBHelper;
+    }
+
+    public StorIOSQLite getStorIOSQLite() {
+        return mStorIOSQLite;
     }
 }
