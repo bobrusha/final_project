@@ -1,52 +1,47 @@
 package com.elegion.androidschool.finalproject.adapter;
 
+import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.elegion.androidschool.finalproject.R;
 
-import java.util.ArrayList;
-
 /**
  * Created by Aleksandra on 12.10.15.
  */
-public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
-    private final ArrayList<String> mDataset;
+public class ItemsAdapter extends RecyclerView.Adapter<ItemViewHolder> {
+    private Cursor mCursor;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView mTextView;
-
-        public ViewHolder(TextView v) {
-            super(v);
-            mTextView = v;
-        }
-    }
-
-    public ItemsAdapter(ArrayList<String> myDataset) {
-        mDataset = myDataset;
+    public Cursor swapCursor(@NonNull Cursor cursor) {
+        final Cursor oldCursor = mCursor;
+        mCursor = cursor;
+        notifyDataSetChanged();
+        Log.v("qq", "In ItemsAdapter cursor was swapped");
+        return oldCursor;
     }
 
     @Override
-    public ItemsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         TextView v = (TextView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.view_item, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ItemViewHolder(v);
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        holder.mTextView.setText(mDataset.get(position));
+    public void onBindViewHolder(ItemViewHolder holder, int position) {
+        if (mCursor.moveToPosition(position)) {
+            holder.bindItem(mCursor);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return mCursor != null ? mCursor.getCount() : 0;
     }
+
 }
 

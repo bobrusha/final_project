@@ -1,64 +1,41 @@
 package com.elegion.androidschool.finalproject;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.elegion.androidschool.finalproject.db.Contract;
 import com.elegion.androidschool.finalproject.db.DBOpenHelper;
-
-import java.util.ArrayList;
+import com.elegion.androidschool.finalproject.model.Item;
+import com.elegion.androidschool.finalproject.model.ItemStorIOSQLiteDeleteResolver;
+import com.elegion.androidschool.finalproject.model.ItemStorIOSQLiteGetResolver;
+import com.elegion.androidschool.finalproject.model.ItemStorIOSQLitePutResolver;
+import com.pushtorefresh.storio.sqlite.SQLiteTypeMapping;
+import com.pushtorefresh.storio.sqlite.StorIOSQLite;
+import com.pushtorefresh.storio.sqlite.impl.DefaultStorIOSQLite;
 
 public class ItemsActivity extends AppCompatActivity {
     private DBOpenHelper mDBHelper;
+    private StorIOSQLite mStorIOSQLite;
 
     private ItemsListFragment mItemsListFragment;
-    private final ArrayList<String> mStringArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mDBHelper = new DBOpenHelper(getApplicationContext());
-
-        SQLiteDatabase db = mDBHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        for (int i = 0; i < 5; ++i) {
-            values.put(Contract.ItemEntity.COLUMN_NAME, "" + i);
-            long newRowId;
-            newRowId = db.insert(
-                    Contract.ItemEntity.TABLE_NAME,
-                    Contract.ItemEntity.COLUMN_DESCRIPTION,
-                    values);
-        }
-        db = mDBHelper.getReadableDatabase();
-        String projection[] = {
-                Contract.ItemEntity._ID,
-                Contract.ItemEntity.COLUMN_NAME
-        };
-        Cursor c = db.query(
-                Contract.ItemEntity.TABLE_NAME,
-                projection,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-
-        c.moveToFirst();
-        int columnIndex = c.getColumnIndex(Contract.ItemEntity.COLUMN_NAME);
-        for (int i = 0; i < c.getCount(); ++i) {
-            mStringArrayList.add(c.getString(columnIndex));
-        }
-
+        mStorIOSQLite = DefaultStorIOSQLite.builder()
+                .sqliteOpenHelper(mDBHelper)
+                .addTypeMapping(Item.class, SQLiteTypeMapping.<Item>builder()
+                        .putResolver(new ItemStorIOSQLitePutResolver())
+                        .getResolver(new ItemStorIOSQLiteGetResolver())
+                        .deleteResolver(new ItemStorIOSQLiteDeleteResolver())
+                        .build())
+                .build();
 
         setContentView(R.layout.activity_items);
-        mItemsListFragment = ItemsListFragment.newInstance(mStringArrayList);
+        mItemsListFragment = new ItemsListFragment();
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, mItemsListFragment)
                 .commit();
@@ -84,5 +61,9 @@ public class ItemsActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public StorIOSQLite getStorIOSQLite() {
+        return mStorIOSQLite;
     }
 }

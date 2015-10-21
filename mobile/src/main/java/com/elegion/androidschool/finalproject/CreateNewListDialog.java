@@ -50,7 +50,6 @@ public class CreateNewListDialog extends DialogFragment {
                                 .prepare()
                                 .executeAsBlocking();
 
-
                         getActivity()
                                 .getLoaderManager()
                                 .restartLoader(R.id.fragment_lists, null, listsActivity.getListsFragment());
