@@ -18,6 +18,7 @@ import com.elegion.androidschool.finalproject.adapter.ListToCardAdapter;
 import com.elegion.androidschool.finalproject.event.ListSelectedEvent;
 import com.elegion.androidschool.finalproject.event.MyBus;
 import com.elegion.androidschool.finalproject.loader.ListsLoader;
+import com.pushtorefresh.storio.sqlite.StorIOSQLite;
 import com.squareup.otto.Subscribe;
 
 /**
@@ -28,6 +29,7 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
     private RecyclerView.LayoutManager mLayoutManager;
     private ListToCardAdapter mAdapter;
 
+    private StorIOSQLite mStorIOSQLite;
     public ListsFragment() {
     }
 

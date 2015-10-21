@@ -76,4 +76,7 @@ public class ListsActivity extends AppCompatActivity {
         return mStorIOSQLite;
     }
 
+    public ListsFragment getListsFragment() {
+        return mListsFragment;
+    }
 }
