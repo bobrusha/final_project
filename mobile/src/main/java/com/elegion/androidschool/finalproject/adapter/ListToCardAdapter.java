@@ -6,14 +6,9 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.elegion.androidschool.finalproject.R;
-import com.elegion.androidschool.finalproject.event.ListSelectedEvent;
-import com.elegion.androidschool.finalproject.event.MyBus;
-import com.elegion.androidschool.finalproject.model.ShoppingList;
 
 /**
  * Created by Aleksandra on 13.10.15.
@@ -31,7 +26,7 @@ public class ListToCardAdapter extends RecyclerView.Adapter<ShoppingListViewHold
 
     @Override
     public ShoppingListViewHolder onCreateViewHolder(ViewGroup parent,
-                                                           int viewType) {
+                                                     int viewType) {
         CardView v = (CardView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.view_list, parent, false);
 
@@ -41,7 +36,7 @@ public class ListToCardAdapter extends RecyclerView.Adapter<ShoppingListViewHold
 
     @Override
     public void onBindViewHolder(ShoppingListViewHolder holder, int position) {
-        if(mCursor.moveToPosition(position)) {
+        if (mCursor.moveToPosition(position)) {
             holder.bindItem(mCursor);
         }
     }

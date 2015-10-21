@@ -21,7 +21,8 @@ public class ShoppingList {
     String mDescription;
 
     //must be package-level
-    ShoppingList() { }
+    ShoppingList() {
+    }
 
     public ShoppingList(String name) {
         mName = name;

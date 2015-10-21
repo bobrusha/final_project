@@ -32,18 +32,6 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        MyBus.getInstance().register(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        MyBus.getInstance().unregister(this);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_lists, container, false);
@@ -84,7 +72,6 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
     }
 
 
-
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mAdapter.swapCursor(data);
@@ -93,6 +80,18 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MyBus.getInstance().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MyBus.getInstance().unregister(this);
     }
 
     @Subscribe
