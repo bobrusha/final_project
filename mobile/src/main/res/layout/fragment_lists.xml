@@ -6,6 +6,8 @@
              android:layout_height="match_parent"
              tools:context="com.elegion.androidschool.finalproject.ListsFragment">
 
+    <include layout="@layout/app_bar"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/lists_list"
         android:layout_width="match_parent"

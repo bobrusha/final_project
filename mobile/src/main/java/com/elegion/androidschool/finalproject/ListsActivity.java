@@ -27,6 +27,11 @@ public class ListsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lists);
 
+        mListsFragment = new ListsFragment();
+        getFragmentManager().beginTransaction()
+                .replace(R.id.lists_container, mListsFragment)
+                .commit();
+
         mDBHelper = new DBOpenHelper(getApplicationContext());
         mStorIOSQLite = DefaultStorIOSQLite.builder()
                 .sqliteOpenHelper(mDBHelper)
@@ -37,11 +42,6 @@ public class ListsActivity extends AppCompatActivity {
                         .build())
                 .build();
 
-        setContentView(R.layout.activity_lists);
-        mListsFragment = new ListsFragment();
-        getFragmentManager().beginTransaction()
-                .replace(R.id.lists_container, mListsFragment)
-                .commit();
     }
 
 
