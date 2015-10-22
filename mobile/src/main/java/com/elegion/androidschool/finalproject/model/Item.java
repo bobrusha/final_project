@@ -23,10 +23,8 @@ public class Item {
     Item() {
     }
 
-    public Item(long id, String name, String description) {
-        mId = id;
+    public Item(String name) {
         mName = name;
-        mDescription = description;
     }
 
     public long getId() {

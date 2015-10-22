@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
     tools:context="com.elegion.androidschool.finalproject.CreateNewItemActivity">
+
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -21,12 +21,23 @@
             android:layout_height="wrap_content">
 
             <EditText
+                android:id="@+id/create_new_item_edit_text_item_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/add_new_item_name_field_hint"
                 android:inputType="textAutoComplete"/>
+
         </android.support.design.widget.TextInputLayout>
 
     </android.support.design.widget.AppBarLayout>
 
-</LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_create_new_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:onClick="onClick"
+        />
+
+
+</FrameLayout>
