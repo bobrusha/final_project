@@ -7,10 +7,12 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -62,6 +64,23 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
                 dialog.show(getFragmentManager(), "create_new_list");
             }
         });
+        NavigationView navigationView = (NavigationView) view.findViewById(R.id.left_drawer);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                switch (id) {
+                    case R.id.navigation_item_1:
+                        startActivity(new Intent(getActivity(), ProductsActivity.class));
+                        return true;
+                    case R.id.navigation_item_2:
+                        //TODO: start activity with markets
+                        return true;
+                }
+                return false;
+            }
+        });
+
     }
 
     @Override

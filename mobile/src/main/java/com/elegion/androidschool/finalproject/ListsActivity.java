@@ -16,7 +16,7 @@ public class ListsActivity extends AppCompatActivity {
 
         mListsFragment = new ListsFragment();
         getFragmentManager().beginTransaction()
-                .replace(R.id.lists_container, mListsFragment)
+                .replace(R.id.qq, mListsFragment)
                 .commit();
 
     }
