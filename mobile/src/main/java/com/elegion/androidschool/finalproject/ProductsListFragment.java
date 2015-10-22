@@ -13,14 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.elegion.androidschool.finalproject.adapter.ItemsAdapter;
+import com.elegion.androidschool.finalproject.adapter.ProductsAdapter;
 import com.elegion.androidschool.finalproject.loader.ProductsLoader;
 
 
 public class ProductsListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
     private RecyclerView mItemsListView;
     private RecyclerView.LayoutManager mLayoutManager;
-    private ItemsAdapter mItemsAdapter;
+    private ProductsAdapter mProductsAdapter;
 
     public ProductsListFragment() {
         // Required empty public constructor
@@ -47,8 +47,8 @@ public class ProductsListFragment extends Fragment implements LoaderManager.Load
         mLayoutManager = new LinearLayoutManager(getActivity());
         mItemsListView.setLayoutManager(mLayoutManager);
 
-        mItemsAdapter = new ItemsAdapter();
-        mItemsListView.setAdapter(mItemsAdapter);
+        mProductsAdapter = new ProductsAdapter();
+        mItemsListView.setAdapter(mProductsAdapter);
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_add_new_item);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +72,7 @@ public class ProductsListFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mItemsAdapter.swapCursor(data);
+        mProductsAdapter.swapCursor(data);
     }
 
     @Override

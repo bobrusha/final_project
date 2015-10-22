@@ -10,11 +10,11 @@ import com.elegion.androidschool.finalproject.db.Contract;
 /**
  * Created by Aleksandra on 21.10.15.
  */
-public class ItemViewHolder extends RecyclerView.ViewHolder {
+public class ProductViewHolder extends RecyclerView.ViewHolder {
     private final TextView mTextView;
     private long mId;
 
-    public ItemViewHolder(View itemView) {
+    public ProductViewHolder(View itemView) {
         super(itemView);
         mTextView = (TextView) itemView;
     }
