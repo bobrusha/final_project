@@ -101,8 +101,8 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
     @Subscribe
     public void listSelectedEventAvailable(ListSelectedEvent event) {
         Log.d("qq", "Bus transport event to target methods");
-        event.getId();
 
-        startActivity(new Intent(getActivity(), ProductsActivity.class));
+        startActivity(new Intent(getActivity(), EntriesActivity.class)
+                .putExtra(EXTRA_SELECTED_LIST_ID, event.getId()));
     }
 }
