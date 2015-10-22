@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBOpenHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "shopping_list.db";
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 3;
 
     public DBOpenHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -24,21 +24,33 @@ public class DBOpenHelper extends SQLiteOpenHelper {
                 Contract.ListEntity.COLUMN_DESCRIPTION + " TEXT " +
                 " );";
 
-        final String SQL_CREATE_ITEM_TABLE = "CREATE TABLE " + Contract.ProductEntity.TABLE_NAME + " (" +
+        final String SQL_CREATE_PRODUCT_TABLE = "CREATE TABLE " + Contract.ProductEntity.TABLE_NAME + " (" +
                 Contract.ProductEntity._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 Contract.ProductEntity.COLUMN_NAME + " TEXT UNIQUE NOT NULL, " +
-                Contract.ProductEntity.COLUMN_DESCRIPTION + " TEXT, " +
-                Contract.ProductEntity.COLUMN_LIST_ID + " INTEGER REFERENCES list" +
+                Contract.ProductEntity.COLUMN_DESCRIPTION + " TEXT" +
+                " );";
+
+
+        final String SQL_CREATE_ENTRY_TABLE = "CREATE TABLE " + Contract.EntryEntity.TABLE_NAME + " (" +
+                Contract.EntryEntity._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                Contract.EntryEntity.COLUMN_LITS_FK + " INTEGER REFERENCES " +
+                Contract.ListEntity.TABLE_NAME + ", " +
+                Contract.EntryEntity.COLUMN_PRODUCT_FK + " INTEGER REFERENCES " +
+                Contract.ProductEntity.TABLE_NAME +
                 " );";
 
         db.execSQL(SQL_CREATE_LIST_TABLE);
-        db.execSQL(SQL_CREATE_ITEM_TABLE);
+        db.execSQL(SQL_CREATE_PRODUCT_TABLE);
+        db.execSQL(SQL_CREATE_ENTRY_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + Contract.ProductEntity.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + Contract.ListEntity.TABLE_NAME);
+        final String dropTable = "DROP TABLE IF EXISTS ";
+
+        db.execSQL(dropTable + Contract.EntryEntity.TABLE_NAME);
+        db.execSQL(dropTable + Contract.ProductEntity.TABLE_NAME);
+        db.execSQL(dropTable + Contract.ListEntity.TABLE_NAME);
 
         onCreate(db);
     }
