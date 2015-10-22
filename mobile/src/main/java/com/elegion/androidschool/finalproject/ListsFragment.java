@@ -25,6 +25,8 @@ import com.squareup.otto.Subscribe;
  * A placeholder fragment containing a simple view.
  */
 public class ListsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    public static final String EXTRA_SELECTED_LIST_ID = "selected_list_id";
+
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private ListToCardAdapter mAdapter;

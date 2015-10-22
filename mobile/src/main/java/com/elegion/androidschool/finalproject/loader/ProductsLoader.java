@@ -5,21 +5,16 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.elegion.androidschool.finalproject.ProductsActivity;
+import com.elegion.androidschool.finalproject.MyApplication;
 import com.elegion.androidschool.finalproject.db.Contract;
-import com.pushtorefresh.storio.sqlite.StorIOSQLite;
 import com.pushtorefresh.storio.sqlite.queries.Query;
 
 /**
  * Created by Aleksandra on 21.10.15.
  */
 public class ProductsLoader extends AsyncTaskLoader<Cursor> {
-    private StorIOSQLite mStorIOSQLite;
-
     public ProductsLoader(Context context) {
         super(context);
-        ProductsActivity productsActivity = (ProductsActivity) context;
-        mStorIOSQLite = productsActivity.getStorIOSQLite();
         Log.v("qq", "ProductsLoader was created");
     }
 
@@ -32,7 +27,7 @@ public class ProductsLoader extends AsyncTaskLoader<Cursor> {
 
     @Override
     public Cursor loadInBackground() {
-        Cursor result = mStorIOSQLite.get()
+        Cursor result = MyApplication.getStorIOSQLite().get()
                 .cursor()
                 .withQuery(Query.builder()
                         .table(Contract.ProductEntity.TABLE_NAME)

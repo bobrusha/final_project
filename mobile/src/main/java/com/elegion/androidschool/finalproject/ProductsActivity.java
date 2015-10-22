@@ -5,24 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.elegion.androidschool.finalproject.db.DBOpenHelper;
-import com.pushtorefresh.storio.sqlite.StorIOSQLite;
-import com.pushtorefresh.storio.sqlite.impl.DefaultStorIOSQLite;
 
 public class ProductsActivity extends AppCompatActivity {
-    private DBOpenHelper mDBHelper;
-    private StorIOSQLite mStorIOSQLite;
 
     private ProductsListFragment mProductsListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mDBHelper = new DBOpenHelper(getApplicationContext());
-        mStorIOSQLite = DefaultStorIOSQLite.builder()
-                .sqliteOpenHelper(mDBHelper)
-                .build();
 
         setContentView(R.layout.activity_products);
         mProductsListFragment = new ProductsListFragment();
@@ -51,9 +41,5 @@ public class ProductsActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public StorIOSQLite getStorIOSQLite() {
-        return mStorIOSQLite;
     }
 }

@@ -33,7 +33,7 @@ public class CreateNewListDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ListsActivity listsActivity = (ListsActivity) getActivity();
-                        StorIOSQLite db = listsActivity.getStorIOSQLite();
+                        StorIOSQLite db = MyApplication.getStorIOSQLite();
 
                         ShoppingList shoppingList = new ShoppingList(nameField.getText().toString());
                         shoppingList.setId(
