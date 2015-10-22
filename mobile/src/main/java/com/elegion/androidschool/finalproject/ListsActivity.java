@@ -21,7 +21,6 @@ public class ListsActivity extends AppCompatActivity {
 
     private ListsFragment mListsFragment;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +31,7 @@ public class ListsActivity extends AppCompatActivity {
                 .replace(R.id.lists_container, mListsFragment)
                 .commit();
 
+
         mDBHelper = new DBOpenHelper(getApplicationContext());
         mStorIOSQLite = DefaultStorIOSQLite.builder()
                 .sqliteOpenHelper(mDBHelper)
@@ -41,7 +41,6 @@ public class ListsActivity extends AppCompatActivity {
                         .deleteResolver(new ShoppingListStorIOSQLiteDeleteResolver())
                         .build())
                 .build();
-
     }
 
 
