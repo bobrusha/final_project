@@ -24,11 +24,11 @@ public class DBOpenHelper extends SQLiteOpenHelper {
                 Contract.ListEntity.COLUMN_DESCRIPTION + " TEXT " +
                 " );";
 
-        final String SQL_CREATE_ITEM_TABLE = "CREATE TABLE " + Contract.ItemEntity.TABLE_NAME + " (" +
-                Contract.ItemEntity._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                Contract.ItemEntity.COLUMN_NAME + " TEXT UNIQUE NOT NULL, " +
-                Contract.ItemEntity.COLUMN_DESCRIPTION + " TEXT, " +
-                Contract.ItemEntity.COLUMN_LIST_ID + " INTEGER REFERENCES list" +
+        final String SQL_CREATE_ITEM_TABLE = "CREATE TABLE " + Contract.ProductEntity.TABLE_NAME + " (" +
+                Contract.ProductEntity._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                Contract.ProductEntity.COLUMN_NAME + " TEXT UNIQUE NOT NULL, " +
+                Contract.ProductEntity.COLUMN_DESCRIPTION + " TEXT, " +
+                Contract.ProductEntity.COLUMN_LIST_ID + " INTEGER REFERENCES list" +
                 " );";
 
         db.execSQL(SQL_CREATE_LIST_TABLE);
@@ -37,7 +37,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + Contract.ItemEntity.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + Contract.ProductEntity.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Contract.ListEntity.TABLE_NAME);
 
         onCreate(db);

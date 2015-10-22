@@ -14,15 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.elegion.androidschool.finalproject.adapter.ItemsAdapter;
-import com.elegion.androidschool.finalproject.loader.ItemsLoader;
+import com.elegion.androidschool.finalproject.loader.ProductsLoader;
 
 
-public class ItemsListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class ProductsListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
     private RecyclerView mItemsListView;
     private RecyclerView.LayoutManager mLayoutManager;
     private ItemsAdapter mItemsAdapter;
 
-    public ItemsListFragment() {
+    public ProductsListFragment() {
         // Required empty public constructor
     }
 
@@ -34,7 +34,7 @@ public class ItemsListFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_items_list, container, false);
+        return inflater.inflate(R.layout.fragment_products_list, container, false);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class ItemsListFragment extends Fragment implements LoaderManager.LoaderC
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), CreateNewItemActivity.class));
+                startActivity(new Intent(getActivity(), CreateNewProductActivity.class));
             }
         });
     }
@@ -67,7 +67,7 @@ public class ItemsListFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new ItemsLoader(getActivity());
+        return new ProductsLoader(getActivity());
     }
 
     @Override

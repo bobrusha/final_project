@@ -101,6 +101,6 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
         Log.d("qq", "Bus transport event to target methods");
         event.getId();
 
-        startActivity(new Intent(getActivity(), ItemsActivity.class));
+        startActivity(new Intent(getActivity(), ProductsActivity.class));
     }
 }

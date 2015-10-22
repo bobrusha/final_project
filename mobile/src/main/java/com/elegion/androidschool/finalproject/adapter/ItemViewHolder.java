@@ -20,7 +20,7 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindItem(final Cursor cursor) {
-        mId = cursor.getLong(cursor.getColumnIndex(Contract.ItemEntity._ID));
-        mTextView.setText(cursor.getString(cursor.getColumnIndex(Contract.ItemEntity.COLUMN_NAME)));
+        mId = cursor.getLong(cursor.getColumnIndex(Contract.ProductEntity._ID));
+        mTextView.setText(cursor.getString(cursor.getColumnIndex(Contract.ProductEntity.COLUMN_NAME)));
     }
 }

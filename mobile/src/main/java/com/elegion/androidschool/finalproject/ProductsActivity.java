@@ -6,19 +6,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.elegion.androidschool.finalproject.db.DBOpenHelper;
-import com.elegion.androidschool.finalproject.model.Item;
-import com.elegion.androidschool.finalproject.model.ItemStorIOSQLiteDeleteResolver;
-import com.elegion.androidschool.finalproject.model.ItemStorIOSQLiteGetResolver;
-import com.elegion.androidschool.finalproject.model.ItemStorIOSQLitePutResolver;
-import com.pushtorefresh.storio.sqlite.SQLiteTypeMapping;
 import com.pushtorefresh.storio.sqlite.StorIOSQLite;
 import com.pushtorefresh.storio.sqlite.impl.DefaultStorIOSQLite;
 
-public class ItemsActivity extends AppCompatActivity {
+public class ProductsActivity extends AppCompatActivity {
     private DBOpenHelper mDBHelper;
     private StorIOSQLite mStorIOSQLite;
 
-    private ItemsListFragment mItemsListFragment;
+    private ProductsListFragment mProductsListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,17 +22,12 @@ public class ItemsActivity extends AppCompatActivity {
         mDBHelper = new DBOpenHelper(getApplicationContext());
         mStorIOSQLite = DefaultStorIOSQLite.builder()
                 .sqliteOpenHelper(mDBHelper)
-                .addTypeMapping(Item.class, SQLiteTypeMapping.<Item>builder()
-                        .putResolver(new ItemStorIOSQLitePutResolver())
-                        .getResolver(new ItemStorIOSQLiteGetResolver())
-                        .deleteResolver(new ItemStorIOSQLiteDeleteResolver())
-                        .build())
                 .build();
 
-        setContentView(R.layout.activity_items);
-        mItemsListFragment = new ItemsListFragment();
+        setContentView(R.layout.activity_products);
+        mProductsListFragment = new ProductsListFragment();
         getFragmentManager().beginTransaction()
-                .replace(R.id.container, mItemsListFragment)
+                .replace(R.id.container, mProductsListFragment)
                 .commit();
     }
 

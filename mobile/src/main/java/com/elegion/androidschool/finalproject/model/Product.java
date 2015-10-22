@@ -7,23 +7,23 @@ import com.pushtorefresh.storio.sqlite.annotations.StorIOSQLiteType;
 /**
  * Created by Aleksandra on 08.10.15.
  */
-@StorIOSQLiteType(table = Contract.ItemEntity.TABLE_NAME)
-public class Item {
+@StorIOSQLiteType(table = Contract.ProductEntity.TABLE_NAME)
+public class Product {
 
-    @StorIOSQLiteColumn(name = Contract.ItemEntity._ID, key = true)
+    @StorIOSQLiteColumn(name = Contract.ProductEntity._ID, key = true)
     long mId;
 
-    @StorIOSQLiteColumn(name = Contract.ItemEntity.COLUMN_NAME)
+    @StorIOSQLiteColumn(name = Contract.ProductEntity.COLUMN_NAME)
     String mName;
 
-    @StorIOSQLiteColumn(name = Contract.ItemEntity.COLUMN_DESCRIPTION)
+    @StorIOSQLiteColumn(name = Contract.ProductEntity.COLUMN_DESCRIPTION)
     String mDescription;
 
     //must be package local
-    Item() {
+    Product() {
     }
 
-    public Item(String name) {
+    public Product(String name) {
         mName = name;
     }
 
