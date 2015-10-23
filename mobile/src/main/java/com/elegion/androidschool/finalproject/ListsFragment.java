@@ -8,11 +8,14 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +25,6 @@ import com.elegion.androidschool.finalproject.adapter.ListToCardAdapter;
 import com.elegion.androidschool.finalproject.event.ListSelectedEvent;
 import com.elegion.androidschool.finalproject.event.MyBus;
 import com.elegion.androidschool.finalproject.loader.ListsLoader;
-import com.pushtorefresh.storio.sqlite.StorIOSQLite;
 import com.squareup.otto.Subscribe;
 
 /**
@@ -34,9 +36,7 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private ListToCardAdapter mAdapter;
-
-    private StorIOSQLite mStorIOSQLite;
-
+    private DrawerLayout mDrawerLayout;
     public ListsFragment() {
     }
 
@@ -71,6 +71,12 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.title_activity_main);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+
+        mDrawerLayout = (DrawerLayout) view.findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = (NavigationView) view.findViewById(R.id.left_drawer);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -89,6 +95,17 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
             }
         });
 
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            // LEFT??
+            mDrawerLayout.openDrawer(Gravity.LEFT);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
