@@ -1,9 +1,10 @@
 package com.elegion.androidschool.finalproject;
 
+
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.EditText;
@@ -51,8 +52,8 @@ public class CreateNewListDialog extends DialogFragment {
                                 .executeAsBlocking();
 
                         getActivity()
-                                .getLoaderManager()
-                                .restartLoader(R.id.fragment_lists, null, listsActivity.getFragment());
+                                .getSupportLoaderManager()
+                                .restartLoader(LoadersId.LISTS_LOADER, null, listsActivity.getFragment());
                     }
                 })
                 .setNegativeButton(R.string.create_new_list_dialog_negative_button, new DialogInterface.OnClickListener() {

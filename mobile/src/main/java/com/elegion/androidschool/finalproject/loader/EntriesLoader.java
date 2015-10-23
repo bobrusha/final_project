@@ -1,8 +1,8 @@
 package com.elegion.androidschool.finalproject.loader;
 
-import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import com.elegion.androidschool.finalproject.MyApplication;

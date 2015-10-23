@@ -16,7 +16,7 @@ public class ProductsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_products);
         mProductsListFragment = new ProductsListFragment();
-        getFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, mProductsListFragment)
                 .commit();
     }

@@ -1,10 +1,8 @@
 package com.elegion.androidschool.finalproject;
 
-import android.app.SearchManager;
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -24,29 +22,10 @@ public class ListsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lists);
 
         mFragment = new ListsFragment();
-        getFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .replace(R.id.qq, mFragment)
                 .commit();
     }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        Log.v("qq", "new intent was received");
-        setIntent(intent);
-        handleIntent(intent);
-    }
-
-    private void handleIntent(Intent intent) {
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String arg = intent.getStringExtra(SearchManager.QUERY);
-            Log.v("qq", arg);
-            Bundle bundle = new Bundle();
-            bundle.putString(EXTRA_QUERY, mQuery);
-            bundle.putString(EXTRA_ARG, arg);
-            mFragment.getLoaderManager().restartLoader(R.id.fragment_select_product, bundle, mFragment);
-        }
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

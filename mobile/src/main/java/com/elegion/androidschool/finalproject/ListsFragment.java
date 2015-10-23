@@ -1,15 +1,17 @@
 package com.elegion.androidschool.finalproject;
 
-import android.app.Fragment;
-import android.app.LoaderManager;
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -34,6 +36,7 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
     private ListToCardAdapter mAdapter;
 
     private StorIOSQLite mStorIOSQLite;
+
     public ListsFragment() {
     }
 
@@ -64,6 +67,11 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
                 dialog.show(getFragmentManager(), "create_new_list");
             }
         });
+
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.title_activity_main);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
         NavigationView navigationView = (NavigationView) view.findViewById(R.id.left_drawer);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -86,7 +94,8 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(R.id.fragment_lists, null, this);
+
+        getLoaderManager().initLoader(LoadersId.LISTS_LOADER, null, this);
     }
 
     @Override
