@@ -18,4 +18,8 @@
     <!-- Creating new product -->
     <string name="add_new_item_name_field_hint">Name</string>
     <string name="title_activity_entries">EntriesActivity</string>
+    <string name="title_activity_select_product">SelectProductActivity</string>
+
+    <!-- Products activity -->
+    <string name="search_hint">Enter name of product</string>
 </resources>

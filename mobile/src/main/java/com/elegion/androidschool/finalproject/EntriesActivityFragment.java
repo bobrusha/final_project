@@ -2,9 +2,11 @@ package com.elegion.androidschool.finalproject;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -44,6 +46,14 @@ public class EntriesActivityFragment extends Fragment implements LoaderManager.L
         mAdapter = new EntryAdapter();
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_add_product_to_list);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), SelectProductActivity.class));
+            }
+        });
     }
 
     @Override
