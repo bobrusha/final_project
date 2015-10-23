@@ -22,4 +22,6 @@
 
     <!-- Products activity -->
     <string name="search_hint">Enter name of product</string>
+    <string name="btn_add_new_entry_to_list">Add</string>
+
 </resources>

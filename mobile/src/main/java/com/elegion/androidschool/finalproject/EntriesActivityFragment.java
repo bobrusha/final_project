@@ -2,31 +2,43 @@ package com.elegion.androidschool.finalproject;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
-import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 
 import com.elegion.androidschool.finalproject.adapter.EntryAdapter;
+import com.elegion.androidschool.finalproject.db.Contract;
 import com.elegion.androidschool.finalproject.loader.EntriesLoader;
+import com.elegion.androidschool.finalproject.loader.ProductsLoader;
+import com.elegion.androidschool.finalproject.model.Entry;
+import com.elegion.androidschool.finalproject.model.Product;
+import com.pushtorefresh.storio.sqlite.queries.Query;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class EntriesActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class EntriesActivityFragment extends Fragment implements
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     private long mListId;
 
     private RecyclerView mRecyclerView;
-    private EntryAdapter mAdapter;
+    private EntryAdapter mEntryAdapter;
+    private AutoCompleteTextView mSearchTextView;
+    private ArrayAdapter<String> mSuggestionAdapter;
 
     public EntriesActivityFragment() {
     }
@@ -43,15 +55,33 @@ public class EntriesActivityFragment extends Fragment implements LoaderManager.L
         super.onViewCreated(view, savedInstanceState);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_list_entry);
-        mAdapter = new EntryAdapter();
-        mRecyclerView.setAdapter(mAdapter);
+        mEntryAdapter = new EntryAdapter();
+        mRecyclerView.setAdapter(mEntryAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_add_product_to_list);
-        fab.setOnClickListener(new View.OnClickListener() {
+        mSearchTextView = (AutoCompleteTextView) view.findViewById(R.id.auto_complete_text_view_find_product);
+        mSuggestionAdapter = new ArrayAdapter<String>(getActivity(), R.layout.view_product);
+        mSearchTextView.setAdapter(mSuggestionAdapter);
+
+        Button addButton = (Button) view.findViewById(R.id.btn_add_new_entry);
+        addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), SelectProductActivity.class));
+                List<Product> products = MyApplication
+                        .getStorIOSQLite()
+                        .get().listOfObjects(Product.class)
+                        .withQuery(Query.<Product>builder()
+                                .table(Contract.ProductEntity.TABLE_NAME)
+                                .where(Contract.ProductEntity.COLUMN_NAME + " = ?")
+                                .whereArgs(mSearchTextView.getText().toString())
+                                .build())
+                        .prepare()
+                        .executeAsBlocking();
+                if (!products.isEmpty()) {
+                    Entry entry = new Entry(mListId, products.get(0).getId());
+                    MyApplication.getStorIOSQLite().put().object(entry).prepare().executeAsBlocking();
+                    getLoaderManager().restartLoader(LoadersId.ENTRY_LOADER, null, EntriesActivityFragment.this);
+                }
             }
         });
     }
@@ -62,17 +92,42 @@ public class EntriesActivityFragment extends Fragment implements LoaderManager.L
 
         mListId = getActivity().getIntent().getLongExtra(ListsFragment.EXTRA_SELECTED_LIST_ID, 0);
         Log.v("qq", "list id = " + mListId);
-        getLoaderManager().initLoader(R.id.fragment_entries, null, this);
+        getLoaderManager().initLoader(LoadersId.ENTRY_LOADER, null, this);
+        getLoaderManager().initLoader(LoadersId.SUGGESTION_LOADER, null, this);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new EntriesLoader(getActivity(), mListId);
+        switch (id) {
+            case LoadersId.ENTRY_LOADER:
+                return new EntriesLoader(getActivity(), mListId);
+            case LoadersId.SUGGESTION_LOADER:
+                return new ProductsLoader(getActivity());
+        }
+        return null;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mAdapter.swapCursor(data);
+        int id = loader.getId();
+        switch (id) {
+            case LoadersId.ENTRY_LOADER:
+                mEntryAdapter.swapCursor(data);
+                break;
+            case LoadersId.SUGGESTION_LOADER:
+                ArrayList<String> arr = new ArrayList<>(data.getCount());
+                data.moveToFirst();
+
+                while (!data.isLast()) {
+                    arr.add(data.getString(data.getColumnIndex(Contract.ProductEntity.COLUMN_NAME)));
+                    data.moveToNext();
+                }
+                arr.add(data.getString(data.getColumnIndex(Contract.ProductEntity.COLUMN_NAME)));
+
+                mSuggestionAdapter.clear();
+                mSuggestionAdapter.addAll(arr);
+        }
+
     }
 
     @Override

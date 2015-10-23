@@ -12,39 +12,44 @@ import com.pushtorefresh.storio.sqlite.annotations.StorIOSQLiteType;
 public class Entry {
 
     @StorIOSQLiteColumn(name = Contract.EntryEntity._ID, key = true)
-    long mId;
+    Long mId;
 
     @StorIOSQLiteColumn(name = Contract.EntryEntity.COLUMN_LITS_FK)
-    long mListId;
+    Long mListId;
 
     @StorIOSQLiteColumn(name = Contract.EntryEntity.COLUMN_PRODUCT_FK)
-    long mProductId;
+    Long mProductId;
 
     // must be package-local
     Entry() {
     }
 
-    public long getId() {
+    public Entry(Long listId, Long productId) {
+        mListId = listId;
+        mProductId = productId;
+    }
+
+    public Long getId() {
         return mId;
     }
 
-    public long getListId() {
+    public Long getListId() {
         return mListId;
     }
 
-    public long getProductId() {
+    public Long getProductId() {
         return mProductId;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         mId = id;
     }
 
-    public void setListId(long listId) {
+    public void setListId(Long listId) {
         mListId = listId;
     }
 
-    public void setProductId(long productId) {
+    public void setProductId(Long productId) {
         mProductId = productId;
     }
 }
