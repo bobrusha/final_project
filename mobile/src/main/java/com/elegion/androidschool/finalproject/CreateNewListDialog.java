@@ -52,7 +52,7 @@ public class CreateNewListDialog extends DialogFragment {
 
                         getActivity()
                                 .getLoaderManager()
-                                .restartLoader(R.id.fragment_lists, null, listsActivity.getListsFragment());
+                                .restartLoader(R.id.fragment_lists, null, listsActivity.getFragment());
                     }
                 })
                 .setNegativeButton(R.string.create_new_list_dialog_negative_button, new DialogInterface.OnClickListener() {
