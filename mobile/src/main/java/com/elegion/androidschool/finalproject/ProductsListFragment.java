@@ -14,7 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.elegion.androidschool.finalproject.adapter.ProductsAdapter;
+import com.elegion.androidschool.finalproject.event.MyBus;
+import com.elegion.androidschool.finalproject.event.ProductSelectedEvent;
 import com.elegion.androidschool.finalproject.loader.ProductsLoader;
+import com.squareup.otto.Subscribe;
 
 
 public class ProductsListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -78,5 +81,25 @@ public class ProductsListFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MyBus.getInstance().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MyBus.getInstance().unregister(this);
+    }
+
+    @Subscribe
+    public void productWasSelected(ProductSelectedEvent event) {
+        startActivity(
+                new Intent(getActivity(), ProductStatisticsActivity.class)
+                        .putExtra(Extras.EXTRA_PRODUCT_ID, event.getSelectedProductId())
+        );
     }
 }

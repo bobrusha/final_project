@@ -6,21 +6,31 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.elegion.androidschool.finalproject.db.Contract;
+import com.elegion.androidschool.finalproject.event.MyBus;
+import com.elegion.androidschool.finalproject.event.ProductSelectedEvent;
 
 /**
  * Created by Aleksandra on 21.10.15.
  */
 public class ProductViewHolder extends RecyclerView.ViewHolder {
+    private final View mView;
     private final TextView mTextView;
     private long mId;
 
     public ProductViewHolder(View itemView) {
         super(itemView);
+        mView = itemView;
         mTextView = (TextView) itemView;
     }
 
     public void bindItem(final Cursor cursor) {
         mId = cursor.getLong(cursor.getColumnIndex(Contract.ProductEntity._ID));
         mTextView.setText(cursor.getString(cursor.getColumnIndex(Contract.ProductEntity.COLUMN_NAME)));
+        mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyBus.getInstance().post(new ProductSelectedEvent(mId));
+            }
+        });
     }
 }
