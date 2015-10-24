@@ -25,4 +25,10 @@ public class Contract {
         public static final String COLUMN_LITS_FK = "list_id";
         public static final String COLUMN_PRODUCT_FK = "product_id";
     }
+
+    public static class PriceEntity implements BaseColumns {
+        public static final String TABLE_NAME = "price";
+        public static final String COLUMN_PRODUCT_FK = "poduct_id";
+        public static final String COLUMN_VALUE = "value";
+    }
 }

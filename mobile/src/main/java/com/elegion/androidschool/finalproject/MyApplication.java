@@ -7,6 +7,10 @@ import com.elegion.androidschool.finalproject.model.Entry;
 import com.elegion.androidschool.finalproject.model.EntryStorIOSQLiteDeleteResolver;
 import com.elegion.androidschool.finalproject.model.EntryStorIOSQLiteGetResolver;
 import com.elegion.androidschool.finalproject.model.EntryStorIOSQLitePutResolver;
+import com.elegion.androidschool.finalproject.model.Price;
+import com.elegion.androidschool.finalproject.model.PriceStorIOSQLiteDeleteResolver;
+import com.elegion.androidschool.finalproject.model.PriceStorIOSQLiteGetResolver;
+import com.elegion.androidschool.finalproject.model.PriceStorIOSQLitePutResolver;
 import com.elegion.androidschool.finalproject.model.Product;
 import com.elegion.androidschool.finalproject.model.ProductStorIOSQLiteDeleteResolver;
 import com.elegion.androidschool.finalproject.model.ProductStorIOSQLiteGetResolver;
@@ -48,6 +52,11 @@ public class MyApplication extends Application {
                         .putResolver(new EntryStorIOSQLitePutResolver())
                         .getResolver(new EntryStorIOSQLiteGetResolver())
                         .deleteResolver(new EntryStorIOSQLiteDeleteResolver())
+                        .build())
+                .addTypeMapping(Price.class, SQLiteTypeMapping.<Price>builder()
+                        .putResolver(new PriceStorIOSQLitePutResolver())
+                        .getResolver(new PriceStorIOSQLiteGetResolver())
+                        .deleteResolver(new PriceStorIOSQLiteDeleteResolver())
                         .build())
                 .build();
     }

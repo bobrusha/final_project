@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBOpenHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "shopping_list.db";
-    private static final int DB_VERSION = 3;
+    private static final int DB_VERSION = 4;
 
     public DBOpenHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -39,15 +39,24 @@ public class DBOpenHelper extends SQLiteOpenHelper {
                 Contract.ProductEntity.TABLE_NAME +
                 " );";
 
+        final String SQL_CREATE_PRICE_TABLE = "CREATE TABLE " + Contract.PriceEntity.TABLE_NAME + " (" +
+                Contract.PriceEntity._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                Contract.PriceEntity.COLUMN_PRODUCT_FK+ " INTEGER REFERENCES " +
+                Contract.ProductEntity.TABLE_NAME + ", " +
+                Contract.PriceEntity.COLUMN_VALUE + " REAL " +
+                " );";
+
         db.execSQL(SQL_CREATE_LIST_TABLE);
         db.execSQL(SQL_CREATE_PRODUCT_TABLE);
         db.execSQL(SQL_CREATE_ENTRY_TABLE);
+        db.execSQL(SQL_CREATE_PRICE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         final String dropTable = "DROP TABLE IF EXISTS ";
 
+        db.execSQL(dropTable + Contract.PriceEntity.TABLE_NAME);
         db.execSQL(dropTable + Contract.EntryEntity.TABLE_NAME);
         db.execSQL(dropTable + Contract.ProductEntity.TABLE_NAME);
         db.execSQL(dropTable + Contract.ListEntity.TABLE_NAME);
