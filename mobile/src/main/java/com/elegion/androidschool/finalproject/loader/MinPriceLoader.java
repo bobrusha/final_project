@@ -11,16 +11,16 @@ import com.pushtorefresh.storio.sqlite.queries.RawQuery;
 /**
  * Created by Aleksandra on 24.10.15.
  */
-public class MaxPriceLoader extends AsyncTaskLoader<Cursor> {
-    public static final String MAX_PRICE = "max_price";
-    public static final String QUERY = "SELECT MAX(" + Contract.PriceEntity.COLUMN_VALUE +
-            ") AS " + MAX_PRICE +
+public class MinPriceLoader extends AsyncTaskLoader<Cursor> {
+    public static final String MIN_PRICE = "max_price";
+    public static final String QUERY = "SELECT MIN(" + Contract.PriceEntity.COLUMN_VALUE +
+            ") AS " + MIN_PRICE +
             " FROM " + Contract.PriceEntity.TABLE_NAME +
             " WHERE " + Contract.PriceEntity.COLUMN_PRODUCT_FK + " = ?;";
 
     private Long mProductId;
 
-    public MaxPriceLoader(Context context, Long productId) {
+    public MinPriceLoader(Context context, Long productId) {
         super(context);
         mProductId = productId;
     }

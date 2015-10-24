@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.elegion.androidschool.finalproject.loader.MaxPriceLoader;
+import com.elegion.androidschool.finalproject.loader.MinPriceLoader;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -21,6 +22,8 @@ public class ProductStatisticsActivityFragment extends Fragment implements Loade
     private Long mSelectedProductId;
 
     private TextView mMaxPriceTextView;
+    private TextView mMinPriceTextView;
+
 
     public ProductStatisticsActivityFragment() {
     }
@@ -35,6 +38,7 @@ public class ProductStatisticsActivityFragment extends Fragment implements Loade
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mMaxPriceTextView = (TextView) view.findViewById(R.id.text_view_max_price);
+        mMinPriceTextView = (TextView) view.findViewById(R.id.text_view_min_price);
     }
 
     @Override
@@ -42,6 +46,7 @@ public class ProductStatisticsActivityFragment extends Fragment implements Loade
         super.onActivityCreated(savedInstanceState);
         mSelectedProductId = getActivity().getIntent().getLongExtra(Extras.EXTRA_PRODUCT_ID, 0);
         getLoaderManager().initLoader(LoadersId.MAX_PRICE_LOADER, null, this);
+        getLoaderManager().initLoader(LoadersId.MIN_PRICE_LOADER, null, this);
     }
 
     @Override
@@ -51,7 +56,7 @@ public class ProductStatisticsActivityFragment extends Fragment implements Loade
             case LoadersId.MAX_PRICE_LOADER:
                 return new MaxPriceLoader(getActivity(), mSelectedProductId);
             case LoadersId.MIN_PRICE_LOADER:
-                //TODO: return MinPriceLoader
+                return new MinPriceLoader(getActivity(), mSelectedProductId);
         }
         return null;
     }
@@ -60,18 +65,22 @@ public class ProductStatisticsActivityFragment extends Fragment implements Loade
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (data.getCount() == 0) {
             Log.v("qq", "cursor is empty");
+            return;
         }
         data.moveToFirst();
         int id = loader.getId();
         switch (id) {
             case LoadersId.MAX_PRICE_LOADER:
-                //TODO: data.getDouble(0) doesn't look good
-                String v = "" + data.getDouble(0);
+                String v = String.valueOf(data.getDouble(data.getColumnIndex(MaxPriceLoader.MAX_PRICE)));
                 Log.v("qq", v);
                 mMaxPriceTextView.setText(v);
                 return;
             case LoadersId.MIN_PRICE_LOADER:
-                //TODO: set Min Value;
+                mMinPriceTextView.setText(
+                        String.valueOf(
+                                data.getDouble(data.getColumnIndex(MinPriceLoader.MIN_PRICE))
+                        )
+                );
                 return;
         }
         return;
