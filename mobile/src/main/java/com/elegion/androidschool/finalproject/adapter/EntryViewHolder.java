@@ -24,7 +24,7 @@ public class EntryViewHolder extends RecyclerView.ViewHolder {
 
     public void bindItem(final Cursor cursor) {
         mId = cursor.getLong(cursor.getColumnIndex(Contract.EntryEntity._ID));
-        mTextView.setText(cursor.getString(cursor.getColumnIndex(Contract.EntryEntity.COLUMN_PRODUCT_FK)));
+        mTextView.setText(cursor.getString(cursor.getColumnIndex(Contract.ProductEntity.COLUMN_NAME)));
 
         mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,5 +34,4 @@ public class EntryViewHolder extends RecyclerView.ViewHolder {
             }
         });
     }
-
 }
