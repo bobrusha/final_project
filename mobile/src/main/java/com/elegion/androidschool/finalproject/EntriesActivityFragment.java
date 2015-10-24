@@ -118,14 +118,17 @@ public class EntriesActivityFragment extends Fragment implements
                 mEntryAdapter.swapCursor(data);
                 break;
             case LoadersId.SUGGESTION_LOADER:
-                ArrayList<String> arr = new ArrayList<>(data.getCount());
-                data.moveToFirst();
 
-                while (!data.isLast()) {
+                ArrayList<String> arr = new ArrayList<>(data.getCount());
+                if (data.getCount() > 0) {
+                    data.moveToFirst();
+
+                    while (!data.isLast()) {
+                        arr.add(data.getString(data.getColumnIndex(Contract.ProductEntity.COLUMN_NAME)));
+                        data.moveToNext();
+                    }
                     arr.add(data.getString(data.getColumnIndex(Contract.ProductEntity.COLUMN_NAME)));
-                    data.moveToNext();
                 }
-                arr.add(data.getString(data.getColumnIndex(Contract.ProductEntity.COLUMN_NAME)));
 
                 mSuggestionAdapter.clear();
                 mSuggestionAdapter.addAll(arr);

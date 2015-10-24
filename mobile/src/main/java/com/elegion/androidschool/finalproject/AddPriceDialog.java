@@ -16,6 +16,7 @@ import com.elegion.androidschool.finalproject.model.Price;
 public class AddPriceDialog extends DialogFragment {
     private EditText mEditTextPrice;
     private long mProductId;
+    private long mEntryId;
 
     public void setProductId(long productId) {
         mProductId = productId;
@@ -39,6 +40,7 @@ public class AddPriceDialog extends DialogFragment {
                                 .object(price)
                                 .prepare()
                                 .executeAsBlocking();
+
                     }
                 })
                 .setNegativeButton(R.string.add_price_dialog_negative_button, new DialogInterface.OnClickListener() {

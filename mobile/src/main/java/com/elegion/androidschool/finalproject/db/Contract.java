@@ -24,6 +24,8 @@ public class Contract {
         public static final String TABLE_NAME = "entry";
         public static final String COLUMN_LITS_FK = "list_id";
         public static final String COLUMN_PRODUCT_FK = "product_id";
+        public static final String COLUM_IS_BOUGHT = "is_bought";
+        public static final String COLUMN_PRICE_ID = "price_id";
     }
 
     public static class PriceEntity implements BaseColumns {
