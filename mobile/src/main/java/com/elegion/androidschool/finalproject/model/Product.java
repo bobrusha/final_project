@@ -11,7 +11,7 @@ import com.pushtorefresh.storio.sqlite.annotations.StorIOSQLiteType;
 public class Product {
 
     @StorIOSQLiteColumn(name = Contract.ProductEntity._ID, key = true)
-    long mId;
+    Long mId;
 
     @StorIOSQLiteColumn(name = Contract.ProductEntity.COLUMN_NAME)
     String mName;

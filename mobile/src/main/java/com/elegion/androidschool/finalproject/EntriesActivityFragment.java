@@ -82,7 +82,12 @@ public class EntriesActivityFragment extends Fragment implements
                         .executeAsBlocking();
                 if (!products.isEmpty()) {
                     Entry entry = new Entry(mListId, products.get(0).getId());
-                    MyApplication.getStorIOSQLite().put().object(entry).prepare().executeAsBlocking();
+                    MyApplication
+                            .getStorIOSQLite()
+                            .put()
+                            .object(entry)
+                            .prepare()
+                            .executeAsBlocking();
                     getLoaderManager().restartLoader(LoadersId.ENTRY_LOADER, null, EntriesActivityFragment.this);
                 }
             }
@@ -157,7 +162,8 @@ public class EntriesActivityFragment extends Fragment implements
     @Subscribe
     public void entryWasSelected(EntrySelectedEvent event) {
         AddPriceDialog dialog = new AddPriceDialog();
-        dialog.setProductId(event.getId());
+        dialog.setEntryId(event.getEntryId());
+        dialog.setProductId(event.getProductId());
         dialog.show(getFragmentManager(), "dialog");
     }
 

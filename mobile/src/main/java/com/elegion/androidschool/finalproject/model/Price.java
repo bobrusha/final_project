@@ -11,13 +11,14 @@ import com.pushtorefresh.storio.sqlite.annotations.StorIOSQLiteType;
 @StorIOSQLiteType(table = Contract.PriceEntity.TABLE_NAME)
 public class Price {
     @StorIOSQLiteColumn( name = Contract.PriceEntity._ID, key = true)
-    Long mId;
+    Long mId = null;
 
     @StorIOSQLiteColumn(name = Contract.PriceEntity.COLUMN_PRODUCT_FK)
     Long mProductId;
 
     @StorIOSQLiteColumn(name = Contract.PriceEntity.COLUMN_VALUE)
     Double mValue;
+
 
     Price() {
     }

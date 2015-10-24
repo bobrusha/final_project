@@ -20,6 +20,14 @@ public class Entry {
     @StorIOSQLiteColumn(name = Contract.EntryEntity.COLUMN_PRODUCT_FK)
     Long mProductId;
 
+    @StorIOSQLiteColumn(name = Contract.EntryEntity.COLUMN_PRICE_ID)
+    Long mPriceId = null;
+
+    @StorIOSQLiteColumn(name = Contract.EntryEntity.COLUM_IS_BOUGHT)
+    int mIsBought;
+
+
+
     // must be package-local
     Entry() {
     }
@@ -51,5 +59,13 @@ public class Entry {
 
     public void setProductId(Long productId) {
         mProductId = productId;
+    }
+
+    public Long getPriceId() {
+        return mPriceId;
+    }
+
+    public int getIsBought() {
+        return mIsBought;
     }
 }

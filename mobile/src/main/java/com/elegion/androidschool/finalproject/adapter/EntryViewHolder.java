@@ -15,7 +15,8 @@ import com.elegion.androidschool.finalproject.event.MyBus;
  */
 public class EntryViewHolder extends RecyclerView.ViewHolder {
     private final TextView mTextView;
-    private long mId;
+    private long mEntryId;
+
 
     public EntryViewHolder(View itemView) {
         super(itemView);
@@ -23,14 +24,16 @@ public class EntryViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindItem(final Cursor cursor) {
-        mId = cursor.getLong(cursor.getColumnIndex(Contract.EntryEntity._ID));
+        mEntryId = cursor.getLong(cursor.getColumnIndex(Contract.EntryEntity._ID));
+
         mTextView.setText(cursor.getString(cursor.getColumnIndex(Contract.ProductEntity.COLUMN_NAME)));
 
         mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.v("qq", "entry was selected");
-                MyBus.getInstance().post(new EntrySelectedEvent(mId));
+                long mProductId = cursor.getLong(cursor.getColumnIndex(Contract.EntryEntity.COLUMN_PRODUCT_FK));
+                MyBus.getInstance().post(new EntrySelectedEvent(mEntryId, mProductId));
             }
         });
     }

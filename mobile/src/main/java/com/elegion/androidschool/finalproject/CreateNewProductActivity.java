@@ -16,7 +16,6 @@ import com.elegion.androidschool.finalproject.model.ProductStorIOSQLitePutResolv
 import com.pushtorefresh.storio.sqlite.SQLiteTypeMapping;
 import com.pushtorefresh.storio.sqlite.StorIOSQLite;
 import com.pushtorefresh.storio.sqlite.impl.DefaultStorIOSQLite;
-import com.pushtorefresh.storio.sqlite.queries.Query;
 
 public class CreateNewProductActivity extends AppCompatActivity {
 
@@ -46,17 +45,6 @@ public class CreateNewProductActivity extends AppCompatActivity {
 
     public void onClick(View v) {
         Product product = new Product(mItemName.getText().toString());
-        long id = mStorIOSQLite
-                .get()
-                .numberOfResults()
-                .withQuery(Query
-                        .builder()
-                        .table(Contract.ProductEntity.TABLE_NAME)
-                        .build())
-                .prepare()
-                .executeAsBlocking();
-        //enumeration begins with 1
-        product.setId(id + 1);
         product.setDescription("qq");
 
         mStorIOSQLite
