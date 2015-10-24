@@ -25,4 +25,9 @@
     <string name="btn_add_new_entry_to_list">Add</string>
     <string name="title_activity_product_statistics">ProductStatisticsActivity</string>
 
+    <!-- AddPrice Dialog-->
+    <string name="add_price_dialog_title">Enter price</string>
+    <string name="add_price_dialog_positive_button">Save</string>
+    <string name="add_price_dialog_negative_button">Cancel</string>
+
 </resources>

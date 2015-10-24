@@ -17,6 +17,13 @@ public class Price {
     Long mProductId;
 
     @StorIOSQLiteColumn(name = Contract.PriceEntity.COLUMN_VALUE)
-    Long mValue;
+    Double mValue;
 
+    Price() {
+    }
+
+    public Price(Long productId, Double value) {
+        mProductId = productId;
+        mValue = value;
+    }
 }

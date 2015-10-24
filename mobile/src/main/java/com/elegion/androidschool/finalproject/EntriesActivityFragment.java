@@ -17,11 +17,14 @@ import android.widget.Button;
 
 import com.elegion.androidschool.finalproject.adapter.EntryAdapter;
 import com.elegion.androidschool.finalproject.db.Contract;
+import com.elegion.androidschool.finalproject.event.EntrySelectedEvent;
+import com.elegion.androidschool.finalproject.event.MyBus;
 import com.elegion.androidschool.finalproject.loader.EntriesLoader;
 import com.elegion.androidschool.finalproject.loader.ProductsLoader;
 import com.elegion.androidschool.finalproject.model.Entry;
 import com.elegion.androidschool.finalproject.model.Product;
 import com.pushtorefresh.storio.sqlite.queries.Query;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,5 +137,26 @@ public class EntriesActivityFragment extends Fragment implements
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MyBus.getInstance().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MyBus.getInstance().unregister(this);
+    }
+
+
+    @Subscribe
+    public void entryWasSelected(EntrySelectedEvent event) {
+        AddPriceDialog dialog = new AddPriceDialog();
+        dialog.setProductId(event.getId());
+        dialog.show(getFragmentManager(), "dialog");
+    }
+
 
 }
