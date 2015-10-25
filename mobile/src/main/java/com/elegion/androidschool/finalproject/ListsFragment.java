@@ -4,17 +4,18 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +37,9 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
     private RecyclerView.LayoutManager mLayoutManager;
     private ListToCardAdapter mAdapter;
     private DrawerLayout mDrawerLayout;
+
+    private Toolbar mToolbar;
+
     public ListsFragment() {
     }
 
@@ -70,38 +74,20 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.title_activity_main);
 
-        mDrawerLayout = (DrawerLayout) view.findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                getActivity(), mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawerLayout.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) view.findViewById(R.id.left_drawer);
-
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                int id = menuItem.getItemId();
-                switch (id) {
-                    case R.id.navigation_item_1:
-                        startActivity(new Intent(getActivity(), ProductsActivity.class));
-                        return true;
-                    case R.id.navigation_item_2:
-                        //TODO: start activity with markets
-                        return true;
-                }
-                return false;
-            }
-        });
-
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        actionBar.setHomeAsUpIndicator(new DrawerArrowDrawable(getActivity()));
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
         setHasOptionsMenu(true);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             // LEFT??
-            mDrawerLayout.openDrawer(Gravity.LEFT);
+            mDrawerLayout.openDrawer(GravityCompat.START);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -111,6 +97,7 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        mDrawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
         getLoaderManager().initLoader(LoadersId.LISTS_LOADER, null, this);
     }
 

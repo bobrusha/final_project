@@ -2,19 +2,15 @@ package com.elegion.androidschool.finalproject;
 
 
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.elegion.androidschool.finalproject.db.Contract;
-
-public class ListsActivity extends AppCompatActivity {
-    public static final String EXTRA_QUERY = "query";
-    public static final String EXTRA_ARG = "arg";
-    private static final String mQuery = "SELECT * FROM " + Contract.ProductEntity.TABLE_NAME +
-            " WHERE " + Contract.ProductEntity.COLUMN_NAME + " LIKE ? ; ";
-
-    private ListsFragment mFragment;
+public class ListsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private Fragment mFragment;
+    private NavigationView mNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +19,13 @@ public class ListsActivity extends AppCompatActivity {
 
         mFragment = new ListsFragment();
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.qq, mFragment)
+                .replace(R.id.must_be_replaced, mFragment)
                 .commit();
+
+        NavigationView mNavigationView = (NavigationView) findViewById(R.id.left_drawer);
+        mNavigationView.setNavigationItemSelectedListener(this);
+
+
     }
 
     @Override
@@ -49,7 +50,26 @@ public class ListsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public ListsFragment getFragment() {
+    public Fragment getFragment() {
         return mFragment;
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem menuItem) {
+        int id = menuItem.getItemId();
+        switch (id) {
+            case R.id.navigation_item_1:
+                int oldId = mFragment.getId();
+                mFragment = new ProductsListFragment();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(oldId, mFragment)
+                        .commit();
+                return true;
+            case R.id.navigation_item_2:
+                //TODO: start activity with markets
+                return true;
+        }
+        return false;
     }
 }

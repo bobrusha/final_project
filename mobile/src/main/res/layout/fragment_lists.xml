@@ -1,14 +1,9 @@
-<android.support.v4.widget.DrawerLayout
-    android:id="@+id/drawer_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.design.widget.CoordinatorLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <android.support.design.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -30,16 +25,5 @@
             android:layout_height="wrap_content"
             app:layout_anchor="@id/lists_list"
             app:layout_anchorGravity="bottom|right|end"/>
-    </android.support.design.widget.CoordinatorLayout>
+</android.support.design.widget.CoordinatorLayout>
 
-    <!-- The navigation drawer -->
-
-    <android.support.design.widget.NavigationView
-        android:id="@+id/left_drawer"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:headerLayout="@layout/drawer_header"
-        app:menu="@menu/drawer_menu"/>
-
-</android.support.v4.widget.DrawerLayout>
