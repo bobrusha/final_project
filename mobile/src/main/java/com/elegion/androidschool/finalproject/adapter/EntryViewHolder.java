@@ -17,7 +17,6 @@ public class EntryViewHolder extends RecyclerView.ViewHolder {
     private final TextView mTextView;
     private long mEntryId;
 
-
     public EntryViewHolder(View itemView) {
         super(itemView);
         mTextView = (TextView) itemView;
@@ -25,9 +24,7 @@ public class EntryViewHolder extends RecyclerView.ViewHolder {
 
     public void bindItem(final Cursor cursor) {
         mEntryId = cursor.getLong(cursor.getColumnIndex(Contract.EntryEntity._ID));
-
         mTextView.setText(cursor.getString(cursor.getColumnIndex(Contract.ProductEntity.COLUMN_NAME)));
-
         mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

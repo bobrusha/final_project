@@ -6,28 +6,27 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.elegion.androidschool.finalproject.db.Contract;
-import com.elegion.androidschool.finalproject.event.MyBus;
-import com.elegion.androidschool.finalproject.event.ProductSelectedEvent;
 
 /**
- * Created by Aleksandra on 21.10.15.
+ * Created by Aleksandra on 25.10.15.
  */
-public class ProductViewHolder extends RecyclerView.ViewHolder {
+public class MarketViewHolder extends RecyclerView.ViewHolder {
     private final TextView mTextView;
-    private long mId;
+    private long mMarketId;
 
-    public ProductViewHolder(View itemView) {
+    public MarketViewHolder(View itemView, long marketId) {
         super(itemView);
         mTextView = (TextView) itemView;
+        mMarketId = marketId;
     }
 
     public void bindItem(final Cursor cursor) {
-        mId = cursor.getLong(cursor.getColumnIndex(Contract.ProductEntity._ID));
-        mTextView.setText(cursor.getString(cursor.getColumnIndex(Contract.ProductEntity.COLUMN_NAME)));
+        mMarketId = cursor.getLong(cursor.getColumnIndex(Contract.MarketEntity._ID));
+        mTextView.setText(cursor.getString(cursor.getColumnIndex(Contract.MarketEntity.COLUMN_NAME)));
         mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyBus.getInstance().post(new ProductSelectedEvent(mId));
+                //TODO: open activity with information about market
             }
         });
     }

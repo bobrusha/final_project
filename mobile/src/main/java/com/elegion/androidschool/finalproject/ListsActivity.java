@@ -24,6 +24,7 @@ public class ListsActivity extends AppCompatActivity implements NavigationView.O
                 .replace(R.id.must_be_replaced, mFragment)
                 .commit();
 
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mNavigationView = (NavigationView) findViewById(R.id.left_drawer);
         mNavigationView.setNavigationItemSelectedListener(this);
@@ -65,9 +66,9 @@ public class ListsActivity extends AppCompatActivity implements NavigationView.O
             case R.id.navigation_item_lists:
                 mFragment = new ListsFragment();
                 getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(oldFragmentId, mFragment)
-                    .commit();
+                        .beginTransaction()
+                        .replace(oldFragmentId, mFragment)
+                        .commit();
                 return true;
             case R.id.navigation_item_products:
                 mFragment = new ProductsListFragment();
@@ -77,7 +78,11 @@ public class ListsActivity extends AppCompatActivity implements NavigationView.O
                         .commit();
                 return true;
             case R.id.navigation_item_markets:
-                //TODO: start activity with markets
+                mFragment = new MarketsFragment();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(oldFragmentId, mFragment)
+                        .commit();
                 return true;
         }
         return false;

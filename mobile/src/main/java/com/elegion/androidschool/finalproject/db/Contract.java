@@ -33,4 +33,9 @@ public class Contract {
         public static final String COLUMN_PRODUCT_FK = "poduct_id";
         public static final String COLUMN_VALUE = "value";
     }
+
+    public static class MarketEntity implements BaseColumns {
+        public static final String TABLE_NAME = "market";
+        public static final String COLUMN_NAME = "name";
+    }
 }
