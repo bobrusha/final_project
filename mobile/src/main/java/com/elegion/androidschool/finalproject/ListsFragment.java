@@ -7,8 +7,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.drawable.DrawerArrowDrawable;
@@ -17,7 +15,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -36,7 +33,6 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private ListToCardAdapter mAdapter;
-    private DrawerLayout mDrawerLayout;
 
     private Toolbar mToolbar;
 
@@ -76,28 +72,18 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(new DrawerArrowDrawable(getActivity()));
+        DrawerArrowDrawable arrowDrawable = new DrawerArrowDrawable(getActivity());
+        arrowDrawable.setSpinEnabled(true);
+        actionBar.setHomeAsUpIndicator(arrowDrawable);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        setHasOptionsMenu(true);
     }
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            // LEFT??
-            mDrawerLayout.openDrawer(GravityCompat.START);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mDrawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
         getLoaderManager().initLoader(LoadersId.LISTS_LOADER, null, this);
     }
 

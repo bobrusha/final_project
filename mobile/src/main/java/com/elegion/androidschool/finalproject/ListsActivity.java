@@ -4,12 +4,14 @@ package com.elegion.androidschool.finalproject;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class ListsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private Fragment mFragment;
+    private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
 
     @Override
@@ -22,10 +24,9 @@ public class ListsActivity extends AppCompatActivity implements NavigationView.O
                 .replace(R.id.must_be_replaced, mFragment)
                 .commit();
 
-        NavigationView mNavigationView = (NavigationView) findViewById(R.id.left_drawer);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mNavigationView = (NavigationView) findViewById(R.id.left_drawer);
         mNavigationView.setNavigationItemSelectedListener(this);
-
-
     }
 
     @Override
@@ -42,9 +43,10 @@ public class ListsActivity extends AppCompatActivity implements NavigationView.O
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(mNavigationView);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -57,6 +59,7 @@ public class ListsActivity extends AppCompatActivity implements NavigationView.O
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         int id = menuItem.getItemId();
+        mDrawerLayout.closeDrawer(mNavigationView);
         switch (id) {
             case R.id.navigation_item_1:
                 int oldId = mFragment.getId();
