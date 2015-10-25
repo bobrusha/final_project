@@ -2,12 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawer_menu">
     <group android:checkableBehavior="single">
+        <item android:id="@+id/navigation_item_lists"
+              android:title="@string/navigation_drawer_lists"
+            />
         <item
-            android:id="@+id/navigation_item_1"
-            android:checked="true"
+            android:id="@+id/navigation_item_products"
             android:title="@string/navigation_drawer_products"/>
         <item
-            android:id="@+id/navigation_item_2"
+            android:id="@+id/navigation_item_markets"
             android:title="@string/navigation_drawer_markets"/>
     </group>
 </menu>

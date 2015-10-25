@@ -60,16 +60,23 @@ public class ListsActivity extends AppCompatActivity implements NavigationView.O
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         int id = menuItem.getItemId();
         mDrawerLayout.closeDrawer(mNavigationView);
+        int oldFragmentId = mFragment.getId();
         switch (id) {
-            case R.id.navigation_item_1:
-                int oldId = mFragment.getId();
+            case R.id.navigation_item_lists:
+                mFragment = new ListsFragment();
+                getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(oldFragmentId, mFragment)
+                    .commit();
+                return true;
+            case R.id.navigation_item_products:
                 mFragment = new ProductsListFragment();
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(oldId, mFragment)
+                        .replace(oldFragmentId, mFragment)
                         .commit();
                 return true;
-            case R.id.navigation_item_2:
+            case R.id.navigation_item_markets:
                 //TODO: start activity with markets
                 return true;
         }

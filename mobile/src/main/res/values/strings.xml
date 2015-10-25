@@ -7,6 +7,7 @@
     <string name="title_activity_main">Lists</string>
 
     <!-- Navigation drawer -->
+    <string name="navigation_drawer_lists">Your lists</string>
     <string name="navigation_drawer_products">Your products</string>
     <string name="navigation_drawer_markets">Your markets</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
