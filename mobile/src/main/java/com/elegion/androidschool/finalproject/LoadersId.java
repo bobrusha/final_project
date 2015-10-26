@@ -11,4 +11,7 @@ public interface LoadersId {
     int MAX_PRICE_LOADER = 31;
     int MIN_PRICE_LOADER = 32;
 
+    int MARKETS_LOADER = 40;
+    int INFO_ABOUT_MARKET_LOADER = 41;
+
 }

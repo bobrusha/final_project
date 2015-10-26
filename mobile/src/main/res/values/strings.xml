@@ -36,6 +36,7 @@
 
 <!-- NewMarketActivity -->
     <string name="title_activity_create_new_market">Create new market</string>
+    <string name="title_activity_info_about_market">InfoAboutMarket</string>
 
 
 

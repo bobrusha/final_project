@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.elegion.androidschool.finalproject.db.Contract;
+import com.elegion.androidschool.finalproject.event.MarketSelectedEvent;
+import com.elegion.androidschool.finalproject.event.MyBus;
 
 /**
  * Created by Aleksandra on 25.10.15.
@@ -26,7 +28,7 @@ public class MarketViewHolder extends RecyclerView.ViewHolder {
         mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: open activity with information about market
+                MyBus.getInstance().post(new MarketSelectedEvent(mMarketId));
             }
         });
     }

@@ -24,4 +24,31 @@ public class Market {
     // default constructor must be package local
     Market() {
     }
+
+    public Market(String name) {
+        mName = name;
+    }
+
+    public Market(Long id, String name, double latitude, double longitude) {
+        mId = id;
+        mName = name;
+        mLatitude = latitude;
+        mLongitude = longitude;
+    }
+
+    public Long getId() {
+        return mId;
+    }
+
+    public String getName() {
+        return mName;
+    }
+
+    public double getLatitude() {
+        return mLatitude;
+    }
+
+    public double getLongitude() {
+        return mLongitude;
+    }
 }

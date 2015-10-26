@@ -1,9 +1,12 @@
 package com.elegion.androidschool.finalproject;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,9 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.elegion.androidschool.finalproject.adapter.MarketsAdapter;
+import com.elegion.androidschool.finalproject.event.MarketSelectedEvent;
+import com.elegion.androidschool.finalproject.event.MyBus;
+import com.elegion.androidschool.finalproject.loader.MarketsLoader;
+import com.squareup.otto.Subscribe;
 
 
-public class MarketsFragment extends Fragment {
+public class MarketsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     RecyclerView mRecyclerView;
     MarketsAdapter mMarketsAdapter;
 
@@ -46,8 +53,48 @@ public class MarketsFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), CreateNewMarketActivity.class));
+                startActivity(new Intent(getActivity(), InfoAboutMarket.class));
             }
         });
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        getLoaderManager().initLoader(LoadersId.MARKETS_LOADER, null, this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        MyBus.getInstance().register(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MyBus.getInstance().unregister(this);
+    }
+
+    @Subscribe
+    public void marketWasSelected(MarketSelectedEvent event) {
+        long marketId = event.getMarketId();
+        startActivity(new Intent(getActivity(), InfoAboutMarket.class));
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new MarketsLoader(getActivity());
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mMarketsAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }
