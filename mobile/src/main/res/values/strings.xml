@@ -34,8 +34,9 @@
     <string name="add_price_dialog_positive_button">Save</string>
     <string name="add_price_dialog_negative_button">Cancel</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_create_new_market">CreateNewMarketActivity</string>
+<!-- NewMarketActivity -->
+    <string name="title_activity_create_new_market">Create new market</string>
+
+
 
 </resources>
