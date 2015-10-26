@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.elegion.androidschool.finalproject.ProductsListFragment">
 
-    
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/items_list"
         android:layout_width="match_parent"
@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:src="@drawable/ic_add_white_24dp"
+        android:layout_margin="@dimen/fab_margin"
         />
 
 </FrameLayout>
