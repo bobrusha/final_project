@@ -14,7 +14,7 @@ public class InfoAboutMarket extends AppCompatActivity {
         setContentView(R.layout.activity_info_about_market);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_save_info_about_market);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

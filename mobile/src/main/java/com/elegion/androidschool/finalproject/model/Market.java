@@ -51,4 +51,16 @@ public class Market {
     public double getLongitude() {
         return mLongitude;
     }
+
+    public void setName(String name) {
+        mName = name;
+    }
+
+    public void setLatitude(double latitude) {
+        mLatitude = latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        mLongitude = longitude;
+    }
 }

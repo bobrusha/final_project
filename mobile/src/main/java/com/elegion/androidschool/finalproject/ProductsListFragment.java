@@ -95,6 +95,7 @@ public class ProductsListFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mProductsAdapter.swapCursor(data);
+
     }
 
     @Override

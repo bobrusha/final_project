@@ -1,9 +1,9 @@
 package com.elegion.androidschool.finalproject;
 
-import android.app.FragmentManager;
 import android.database.Cursor;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.elegion.androidschool.finalproject.adapter.Constants;
 import com.elegion.androidschool.finalproject.db.Contract;
 import com.elegion.androidschool.finalproject.loader.InfoAboutMarketLoader;
 import com.elegion.androidschool.finalproject.model.Market;
@@ -28,6 +29,8 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -44,7 +47,10 @@ public class InfoAboutMarketFragment extends Fragment implements
 
     protected GoogleApiClient mGoogleApiClient;
     private MapFragment mMapFragment;
+    private Marker mMarker;
+
     private EditText mMarketNameEditText;
+    private FloatingActionButton mFab;
 
     private GoogleMapOptions mGoogleMapOptions = new GoogleMapOptions();
 
@@ -76,6 +82,10 @@ public class InfoAboutMarketFragment extends Fragment implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        mFab = (FloatingActionButton) activity.findViewById(R.id.fab_save_info_about_market);
+        mFab.setOnClickListener(new OnSaveButtonClickListener());
+
         long marketId = getActivity().getIntent().getLongExtra(Extras.EXTRA_MARKET_ID, -1);
         if (marketId > 0) {
             Bundle bundle = new Bundle();
@@ -86,10 +96,6 @@ public class InfoAboutMarketFragment extends Fragment implements
         setData();
         if (savedInstanceState == null) {
             mMapFragment = MapFragment.newInstance(mGoogleMapOptions);
-            AppCompatActivity activity = (AppCompatActivity) getActivity();
-            FragmentManager ma = activity.getFragmentManager();
-            Fragment fragment = activity.getSupportFragmentManager().findFragmentById(R.id.info_about_market_map_container);
-            android.app.Fragment fragment1 = activity.getFragmentManager().findFragmentById(R.id.info_about_market_map_container);
             activity
                     .getFragmentManager()
                     .beginTransaction()
@@ -151,11 +157,19 @@ public class InfoAboutMarketFragment extends Fragment implements
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(final GoogleMap googleMap) {
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                //TODO: implement
+                if (mMarker != null) {
+                    mMarker.remove();
+                }
+                mMarker = googleMap.addMarker(
+                        new MarkerOptions()
+                                .position(latLng)
+                                .draggable(true)
+                                .alpha(0.7f)
+                );
             }
         });
     }
@@ -183,5 +197,33 @@ public class InfoAboutMarketFragment extends Fragment implements
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API);
         mGoogleApiClient = builder.build();
+    }
+
+    public class OnSaveButtonClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            String marketName = mMarketNameEditText.getText().toString();
+            LatLng position =  mMarker.getPosition();
+
+            if (marketName.isEmpty()) {
+            //TODO: show dialog
+                Log.v(Constants.LOG_TAG, "Name is empty");
+                return;
+            }
+            if (position == null) {
+                //TODO:show dialog
+                Log.v(Constants.LOG_TAG, "Position is null");
+                return;
+            }
+            Market newMarket = new Market(marketName);
+            newMarket.setLatitude(position.latitude);
+            newMarket.setLongitude(position.longitude);
+            MyApplication.getStorIOSQLite()
+                    .put()
+                    .object(newMarket)
+                    .prepare()
+                    .executeAsBlocking();
+            getActivity().onBackPressed();
+        }
     }
 }
