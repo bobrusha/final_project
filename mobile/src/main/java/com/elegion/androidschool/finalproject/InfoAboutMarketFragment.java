@@ -19,6 +19,7 @@ import android.widget.EditText;
 import com.elegion.androidschool.finalproject.adapter.Constants;
 import com.elegion.androidschool.finalproject.db.Contract;
 import com.elegion.androidschool.finalproject.loader.InfoAboutMarketLoader;
+import com.elegion.androidschool.finalproject.loader.LoadersId;
 import com.elegion.androidschool.finalproject.model.Market;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -72,8 +73,6 @@ public class InfoAboutMarketFragment extends Fragment implements
         super.onViewCreated(view, savedInstanceState);
         mToolbar = (Toolbar) view.findViewById(R.id.info_about_market_toolbar);
         mMarketNameEditText = (EditText) view.findViewById(R.id.edit_text_market_name);
-
-
     }
 
     @Override

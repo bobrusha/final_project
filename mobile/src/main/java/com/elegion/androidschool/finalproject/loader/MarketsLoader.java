@@ -32,9 +32,9 @@ public class MarketsLoader extends AsyncTaskLoader<Cursor> {
                 .withQuery(
                         Query.builder()
                                 .table(Contract.MarketEntity.TABLE_NAME)
-                                .columns(Contract.MarketEntity._ID, Contract.MarketEntity.COLUMN_NAME)
                                 .build()
-                ).prepare()
+                )
+                .prepare()
                 .executeAsBlocking();
 
     }

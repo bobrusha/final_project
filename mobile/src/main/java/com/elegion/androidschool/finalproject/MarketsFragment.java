@@ -22,6 +22,7 @@ import com.elegion.androidschool.finalproject.adapter.Constants;
 import com.elegion.androidschool.finalproject.adapter.MarketsAdapter;
 import com.elegion.androidschool.finalproject.event.MarketSelectedEvent;
 import com.elegion.androidschool.finalproject.event.MyBus;
+import com.elegion.androidschool.finalproject.loader.LoadersId;
 import com.elegion.androidschool.finalproject.loader.MarketsLoader;
 import com.squareup.otto.Subscribe;
 

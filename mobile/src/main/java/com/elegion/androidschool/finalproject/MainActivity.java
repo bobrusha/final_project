@@ -4,15 +4,21 @@ package com.elegion.androidschool.finalproject;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.elegion.androidschool.finalproject.db.Contract;
+import com.elegion.androidschool.finalproject.loader.GeofencesLoader;
+import com.elegion.androidschool.finalproject.loader.LoadersId;
 import com.elegion.androidschool.finalproject.service.GeofenceService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -27,7 +33,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-        ResultCallback<Status> {
+        ResultCallback<Status>,
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final int REQUEST_CODE = 12;
     protected GoogleApiClient mGoogleApiClient;
@@ -60,10 +67,10 @@ public class MainActivity extends AppCompatActivity implements
 
 
         mGeofenceArrayList = new ArrayList<>();
-        populateList();
 
         mSharedPreferences = getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE);
         buildGoogleAoiClient();
+        getSupportLoaderManager().initLoader(LoadersId.GEOFENCES_LOADER, null, this);
     }
 
     @Override
@@ -142,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onStop() {
         super.onStop();
-        //mGoogleApiClient.disconnect();
+        mGoogleApiClient.disconnect();
     }
 
     public void addGeofences() {
@@ -183,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onConnected(Bundle bundle) {
         Log.v("qq", "Connected");
-        addGeofences();
+        //addGeofences();
     }
 
     @Override
@@ -206,20 +213,47 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    public void populateList() {
-        mGeofenceArrayList.add(new Geofence.Builder()
-                        .setRequestId("SEMYA")
-                        .setCircularRegion(59.844900, 30.322769, 100)
-                        .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
-                        .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                        .build()
-        );
-        mGeofenceArrayList.add(new Geofence.Builder()
-                        .setRequestId("LETO")
-                        .setCircularRegion(59.819479, 30.316482, 100)
-                        .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
-                        .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                        .build()
-        );
+    public void populateList(Cursor cursor) {
+        float radius = 100;
+        String marketName = null;
+        Double lat;
+        Double lng;
+
+        while (cursor.isAfterLast()) {
+            marketName = cursor.getString(cursor.getColumnIndex(Contract.MarketEntity.TABLE_NAME +
+                    "." + Contract.MarketEntity.COLUMN_NAME));
+            lat = cursor.getDouble(cursor.getColumnIndex(Contract.MarketEntity.TABLE_NAME +
+                    "." + Contract.MarketEntity.COLUMN_LATITUDE));
+
+            lng = cursor.getDouble(cursor.getColumnIndex(Contract.MarketEntity.TABLE_NAME +
+                    "." + Contract.MarketEntity.COLUMN_LONGITUDE));
+
+            mGeofenceArrayList.add(new Geofence.Builder()
+                            .setRequestId(marketName)
+                            .setCircularRegion(lat, lng, radius)
+                            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+                            .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                            .build()
+            );
+        }
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new GeofencesLoader(this);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (data.getCount() > 0) {
+            data.moveToFirst();
+            populateList(data);
+            addGeofences();
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }

@@ -1,4 +1,4 @@
-package com.elegion.androidschool.finalproject;
+package com.elegion.androidschool.finalproject.loader;
 
 /**
  * Created by Aleksandra on 23.10.15.
@@ -14,4 +14,5 @@ public interface LoadersId {
     int MARKETS_LOADER = 40;
     int INFO_ABOUT_MARKET_LOADER = 41;
 
+    int GEOFENCES_LOADER = 50;
 }

@@ -20,6 +20,7 @@ import com.elegion.androidschool.finalproject.db.Contract;
 import com.elegion.androidschool.finalproject.event.EntrySelectedEvent;
 import com.elegion.androidschool.finalproject.event.MyBus;
 import com.elegion.androidschool.finalproject.loader.EntriesLoader;
+import com.elegion.androidschool.finalproject.loader.LoadersId;
 import com.elegion.androidschool.finalproject.loader.ProductsLoader;
 import com.elegion.androidschool.finalproject.model.Entry;
 import com.elegion.androidschool.finalproject.model.Product;

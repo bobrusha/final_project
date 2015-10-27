@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.elegion.androidschool.finalproject.MyApplication;
 import com.elegion.androidschool.finalproject.db.Contract;
+import com.elegion.androidschool.finalproject.model.ShoppingList;
 import com.pushtorefresh.storio.sqlite.queries.Query;
 
 /**
@@ -30,7 +31,7 @@ public class ListsLoader extends AsyncTaskLoader<Cursor> {
     public Cursor loadInBackground() {
         Cursor result = MyApplication.getStorIOSQLite().get()
                 .cursor()
-                .withQuery(Query.builder()
+                .withQuery(Query.<ShoppingList>builder()
                         .table(Contract.ListEntity.TABLE_NAME)
                         .build())
                 .prepare()

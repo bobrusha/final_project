@@ -22,6 +22,7 @@ import com.elegion.androidschool.finalproject.adapter.ListToCardAdapter;
 import com.elegion.androidschool.finalproject.event.ListSelectedEvent;
 import com.elegion.androidschool.finalproject.event.MyBus;
 import com.elegion.androidschool.finalproject.loader.ListsLoader;
+import com.elegion.androidschool.finalproject.loader.LoadersId;
 import com.squareup.otto.Subscribe;
 
 /**
@@ -60,8 +61,7 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CreateNewListDialog dialog = new CreateNewListDialog();
-                dialog.show(getFragmentManager(), "create_new_list");
+                startActivity(new Intent(getActivity(), CreateNewListActivity.class));
             }
         });
 
@@ -88,6 +88,7 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new ListsLoader(getActivity());
+
     }
 
 

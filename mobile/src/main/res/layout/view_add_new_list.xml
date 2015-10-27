@@ -5,18 +5,23 @@
               android:orientation="vertical">
 
     <android.support.design.widget.TextInputLayout
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <EditText
-            android:hint="@string/create_new_list_dialog_title_field_hint"
             android:id="@+id/edit_text_shopping_list_name"
-            android:inputType="text"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/create_new_list_dialog_title_field_hint"
+            android:inputType="text"
             android:singleLine="true"/>
 
     </android.support.design.widget.TextInputLayout>
 
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/markets_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 
 </LinearLayout>
