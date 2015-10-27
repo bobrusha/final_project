@@ -7,8 +7,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +28,7 @@ public class ProductsListFragment extends Fragment implements LoaderManager.Load
     private RecyclerView mItemsListView;
     private RecyclerView.LayoutManager mLayoutManager;
     private ProductsAdapter mProductsAdapter;
+    private Toolbar mToolbar;
 
     public ProductsListFragment() {
         // Required empty public constructor
@@ -60,11 +65,25 @@ public class ProductsListFragment extends Fragment implements LoaderManager.Load
                 startActivity(new Intent(getActivity(), CreateNewProductActivity.class));
             }
         });
+        mToolbar = (Toolbar) view.findViewById(R.id.toolbar_products);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(mToolbar);
+        ActionBar actionBar = activity.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.products_toolbar_title);
+            DrawerArrowDrawable arrowDrawable = new DrawerArrowDrawable(getActivity());
+            arrowDrawable.setSpinEnabled(true);
+            actionBar.setHomeAsUpIndicator(arrowDrawable);
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         getLoaderManager().initLoader(R.id.fragment_items_list, null, this);
     }
 

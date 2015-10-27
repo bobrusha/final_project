@@ -24,7 +24,7 @@
     <string name="title_activity_entries">EntriesActivity</string>
     <string name="title_activity_select_product">SelectProductActivity</string>
 
-    <!-- Products activity -->
+    <!-- Entries activity -->
     <string name="search_hint">Enter name of product</string>
     <string name="btn_add_new_entry_to_list">Add</string>
     <string name="title_activity_product_statistics">ProductStatisticsActivity</string>
@@ -33,6 +33,11 @@
     <string name="add_price_dialog_title">Enter price</string>
     <string name="add_price_dialog_positive_button">Save</string>
     <string name="add_price_dialog_negative_button">Cancel</string>
+
+    <!--Products activity -->
+    <string name="products_toolbar_title">Products</string>
+    <!-- Markets activity -->
+    <string name="markets_toolbar_title">Markets</string>
 
 <!-- NewMarketActivity -->
     <string name="title_activity_create_new_market">Create new market</string>

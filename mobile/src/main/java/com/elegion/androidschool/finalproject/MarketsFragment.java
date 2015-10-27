@@ -7,8 +7,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +27,7 @@ import com.squareup.otto.Subscribe;
 public class MarketsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     RecyclerView mRecyclerView;
     MarketsAdapter mMarketsAdapter;
+    Toolbar mToolbar;
 
     public MarketsFragment() {
         // Required empty public constructor
@@ -56,12 +61,25 @@ public class MarketsFragment extends Fragment implements LoaderManager.LoaderCal
                 startActivity(new Intent(getActivity(), InfoAboutMarket.class));
             }
         });
+        mToolbar = (Toolbar) view.findViewById(R.id.toolbar_markets);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        AppCompatActivity acttivity = (AppCompatActivity) getActivity();
+        acttivity.setSupportActionBar(mToolbar);
+
+        ActionBar actionBar = acttivity.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.markets_toolbar_title);
+            DrawerArrowDrawable arrowDrawable = new DrawerArrowDrawable(getActivity());
+            arrowDrawable.setSpinEnabled(true);
+            actionBar.setHomeAsUpIndicator(arrowDrawable);
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         getLoaderManager().initLoader(LoadersId.MARKETS_LOADER, null, this);
     }
 
