@@ -49,7 +49,8 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_lists);
 
         mFragment = new ListsFragment();
-        getSupportFragmentManager().beginTransaction()
+        getSupportFragmentManager()
+                .beginTransaction()
                 .replace(R.id.must_be_replaced, mFragment)
                 .commit();
 
