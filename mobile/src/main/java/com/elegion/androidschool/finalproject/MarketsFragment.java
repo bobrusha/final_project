@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.elegion.androidschool.finalproject.adapter.Constants;
 import com.elegion.androidschool.finalproject.adapter.MarketsAdapter;
 import com.elegion.androidschool.finalproject.event.MarketSelectedEvent;
 import com.elegion.androidschool.finalproject.event.MyBus;
@@ -83,22 +84,25 @@ public class MarketsFragment extends Fragment implements LoaderManager.LoaderCal
         getLoaderManager().initLoader(LoadersId.MARKETS_LOADER, null, this);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        MyBus.getInstance().register(this);
-    }
 
     @Override
     public void onResume() {
         super.onResume();
+        MyBus.getInstance().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
         MyBus.getInstance().unregister(this);
     }
 
     @Subscribe
     public void marketWasSelected(MarketSelectedEvent event) {
         long marketId = event.getMarketId();
-        startActivity(new Intent(getActivity(), InfoAboutMarket.class));
+        Log.v(Constants.LOG_TAG, "In marketWasSelected");
+        startActivity(new Intent(getActivity(), InfoAboutMarket.class)
+                .putExtra(Extras.EXTRA_MARKET_ID, marketId));
     }
 
     @Override

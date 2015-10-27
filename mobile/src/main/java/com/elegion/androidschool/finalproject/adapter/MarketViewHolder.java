@@ -2,6 +2,7 @@ package com.elegion.androidschool.finalproject.adapter;
 
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,10 +17,9 @@ public class MarketViewHolder extends RecyclerView.ViewHolder {
     private final TextView mTextView;
     private long mMarketId;
 
-    public MarketViewHolder(View itemView, long marketId) {
+    public MarketViewHolder(View itemView) {
         super(itemView);
         mTextView = (TextView) itemView;
-        mMarketId = marketId;
     }
 
     public void bindItem(final Cursor cursor) {
@@ -28,6 +28,7 @@ public class MarketViewHolder extends RecyclerView.ViewHolder {
         mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.v(Constants.LOG_TAG, "OnClickListener");
                 MyBus.getInstance().post(new MarketSelectedEvent(mMarketId));
             }
         });

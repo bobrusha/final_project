@@ -3,8 +3,10 @@ package com.elegion.androidschool.finalproject.loader;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.content.AsyncTaskLoader;
+import android.util.Log;
 
 import com.elegion.androidschool.finalproject.MyApplication;
+import com.elegion.androidschool.finalproject.adapter.Constants;
 import com.elegion.androidschool.finalproject.db.Contract;
 import com.elegion.androidschool.finalproject.model.Market;
 import com.pushtorefresh.storio.sqlite.queries.Query;
@@ -29,6 +31,7 @@ public class InfoAboutMarketLoader extends AsyncTaskLoader<Cursor> {
 
     @Override
     public Cursor loadInBackground() {
+        Log.v(Constants.LOG_TAG, "MarketId" + mMarketId );
         return MyApplication.getStorIOSQLite()
                 .get()
                 .cursor()

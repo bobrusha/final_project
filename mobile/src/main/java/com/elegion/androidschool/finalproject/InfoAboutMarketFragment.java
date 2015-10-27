@@ -23,6 +23,7 @@ import com.elegion.androidschool.finalproject.model.Market;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapFragment;
@@ -41,6 +42,7 @@ public class InfoAboutMarketFragment extends Fragment implements
 
     private static final float ZOOM = 18;
     private static final float BEARING = 40;
+    private static final float TITLE = 0;
 
 
     private Market mMarketModel;
@@ -90,10 +92,11 @@ public class InfoAboutMarketFragment extends Fragment implements
         if (marketId > 0) {
             Bundle bundle = new Bundle();
             bundle.putLong(Extras.EXTRA_MARKET_ID, marketId);
-            getLoaderManager().initLoader(LoadersId.INFO_ABOUT_MARKET_LOADER, null, this);
+            getLoaderManager().initLoader(LoadersId.INFO_ABOUT_MARKET_LOADER, bundle, this);
         }
+
         buildGoogleApiClient();
-        setData();
+
         if (savedInstanceState == null) {
             mMapFragment = MapFragment.newInstance(mGoogleMapOptions);
             activity
@@ -102,7 +105,9 @@ public class InfoAboutMarketFragment extends Fragment implements
                     .replace(R.id.info_about_market_map_container, mMapFragment)
                     .commit();
         }
+
         mMapFragment.getMapAsync(this);
+
     }
 
     @Override
@@ -114,6 +119,7 @@ public class InfoAboutMarketFragment extends Fragment implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (data.getCount() > 0) {
+            data.moveToFirst();
             long marketId = data.getLong(data.getColumnIndex(Contract.MarketEntity._ID));
             String marketName = data.getString(data.getColumnIndex(Contract.MarketEntity.COLUMN_NAME));
             double latitude = data.getDouble(data.getColumnIndex(Contract.MarketEntity.COLUMN_LATITUDE));
@@ -128,32 +134,25 @@ public class InfoAboutMarketFragment extends Fragment implements
     }
 
     private void setData() {
+        LatLng latLng = new LatLng(59.931930, 30.343385);
         if (mMarketModel == null) {
             Location userLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
             if (userLocation != null) {
-                mGoogleMapOptions.camera(
-                        CameraPosition
-                                .builder()
-                                .target(new LatLng(userLocation.getLatitude(), userLocation.getLongitude()))
-                                .zoom(ZOOM)
-                                .bearing(BEARING)
-                                .build()
-                );
-            } else {
-                mGoogleMapOptions.camera(
-                        CameraPosition
-                                .builder()
-                                .target(new LatLng(59.931930, 30.343385))
-                                .zoom(ZOOM)
-                                .bearing(BEARING)
-                                .build()
-                );
+                latLng = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
             }
-
         } else {
             mMarketNameEditText.setText(mMarketModel.getName());
+            latLng = new LatLng(mMarketModel.getLatitude(), mMarketModel.getLongitude());
+            mMarker = mMapFragment.getMap()
+                    .addMarker(
+                            new MarkerOptions()
+                                    .position(latLng).draggable(true)
+                    );
         }
+        mMapFragment.getMap()
+                .moveCamera(
+                        CameraUpdateFactory.newCameraPosition(
+                                new CameraPosition(latLng, ZOOM, TITLE, BEARING)));
     }
 
     @Override
@@ -172,6 +171,7 @@ public class InfoAboutMarketFragment extends Fragment implements
                 );
             }
         });
+        setData();
     }
 
     @Override
@@ -215,15 +215,20 @@ public class InfoAboutMarketFragment extends Fragment implements
                 Log.v(Constants.LOG_TAG, "Position is null");
                 return;
             }
-            Market newMarket = new Market(marketName);
-            newMarket.setLatitude(position.latitude);
-            newMarket.setLongitude(position.longitude);
+            if (mMarketModel == null) {
+             mMarketModel = new Market(marketName);
+            }
+            mMarketModel.setName(marketName);
+            mMarketModel.setLatitude(position.latitude);
+            mMarketModel.setLongitude(position.longitude);
             MyApplication.getStorIOSQLite()
                     .put()
-                    .object(newMarket)
+                    .object(mMarketModel)
                     .prepare()
                     .executeAsBlocking();
             getActivity().onBackPressed();
         }
     }
+
+
 }

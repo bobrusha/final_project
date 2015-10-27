@@ -28,8 +28,7 @@ public class MarketsAdapter extends RecyclerView.Adapter<MarketViewHolder> {
     public MarketViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.view_market, parent, false);
-        //TODO: change 0 to id
-        return new MarketViewHolder(v, 0);
+        return new MarketViewHolder(v);
     }
 
     @Override
