@@ -28,8 +28,6 @@ import com.squareup.otto.Subscribe;
  * A placeholder fragment containing a simple view.
  */
 public class ListsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    public static final String EXTRA_SELECTED_LIST_ID = "selected_list_id";
-
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private ListToCardAdapter mAdapter;
@@ -120,6 +118,7 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
         Log.d("qq", "Bus transport event to target methods");
 
         startActivity(new Intent(getActivity(), EntriesActivity.class)
-                .putExtra(EXTRA_SELECTED_LIST_ID, event.getId()));
+                .putExtra(Extras.EXTRA_LIST_ID, event.getListId())
+                .putExtra(Extras.EXTRA_LIST_NAME, event.getListName()));
     }
 }

@@ -32,7 +32,7 @@ public class ShoppingListViewHolder extends RecyclerView.ViewHolder {
         mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyBus.getInstance().post(new ListSelectedEvent(mShoppingListId));
+                MyBus.getInstance().post(new ListSelectedEvent(mShoppingListId, mTextView.getText().toString()));
             }
         });
     }

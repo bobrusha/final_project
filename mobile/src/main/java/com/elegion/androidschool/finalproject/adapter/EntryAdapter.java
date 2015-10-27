@@ -26,9 +26,8 @@ public class EntryAdapter extends RecyclerView.Adapter<EntryViewHolder> {
     @Override
     public EntryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         TextView v = (TextView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.view_product, parent, false);
+                .inflate(R.layout.view_entry, parent, false);
         return new EntryViewHolder(v);
-
     }
 
     @Override

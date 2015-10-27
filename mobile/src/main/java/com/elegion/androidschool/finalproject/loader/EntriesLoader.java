@@ -34,7 +34,7 @@ public class EntriesLoader extends AsyncTaskLoader<Cursor> {
                         .builder()
                         .query("select * from " +
                                 "(select * from entry where entry.list_id = ?) as T " +
-                                "join product on product._id = T.product_id;")
+                                "join product on product._id = T.product_id ORDER BY T.is_bought;")
                         .args(mId)
                         .build())
                 .prepare()

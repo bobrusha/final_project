@@ -27,7 +27,6 @@
     <!-- Entries activity -->
     <string name="search_hint">Enter name of product</string>
     <string name="btn_add_new_entry_to_list">Add</string>
-    <string name="title_activity_product_statistics">ProductStatisticsActivity</string>
 
     <!-- AddPrice Dialog-->
     <string name="add_price_dialog_title">Enter price</string>
@@ -36,6 +35,9 @@
 
     <!--Products activity -->
     <string name="products_toolbar_title">Products</string>
+
+    <!-- Statistics activity -->
+    <string name="title_activity_product_statistics">Statistics</string>
     <!-- Markets activity -->
     <string name="markets_toolbar_title">Markets</string>
 

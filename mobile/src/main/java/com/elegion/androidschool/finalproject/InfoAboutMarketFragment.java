@@ -51,6 +51,7 @@ public class InfoAboutMarketFragment extends Fragment implements
     private MapFragment mMapFragment;
     private Marker mMarker;
 
+    private Toolbar mToolbar;
     private EditText mMarketNameEditText;
     private FloatingActionButton mFab;
 
@@ -69,22 +70,22 @@ public class InfoAboutMarketFragment extends Fragment implements
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        mToolbar = (Toolbar) view.findViewById(R.id.info_about_market_toolbar);
         mMarketNameEditText = (EditText) view.findViewById(R.id.edit_text_market_name);
 
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setHomeButtonEnabled(true);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(mToolbar);
+        ActionBar actionBar = activity.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         mFab = (FloatingActionButton) activity.findViewById(R.id.fab_save_info_about_market);
         mFab.setOnClickListener(new OnSaveButtonClickListener());
 

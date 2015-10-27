@@ -16,11 +16,14 @@ public class EntriesActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        String nameOfList = getIntent().getStringExtra(Extras.EXTRA_LIST_NAME);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(nameOfList);
         }
+
     }
 
     @Override

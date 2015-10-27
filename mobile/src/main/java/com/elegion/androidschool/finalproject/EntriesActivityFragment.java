@@ -98,7 +98,7 @@ public class EntriesActivityFragment extends Fragment implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mListId = getActivity().getIntent().getLongExtra(ListsFragment.EXTRA_SELECTED_LIST_ID, 0);
+        mListId = getActivity().getIntent().getLongExtra(Extras.EXTRA_LIST_ID, 0);
         Log.v("qq", "list id = " + mListId);
         getLoaderManager().initLoader(LoadersId.ENTRY_LOADER, null, this);
         getLoaderManager().initLoader(LoadersId.SUGGESTION_LOADER, null, this);
