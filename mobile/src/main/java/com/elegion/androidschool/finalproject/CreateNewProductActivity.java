@@ -28,6 +28,10 @@ public class CreateNewProductActivity extends AppCompatActivity {
         }
 
         mItemName = (EditText) findViewById(R.id.create_new_item_edit_text_item_name);
+        String productName = getIntent().getStringExtra(Extras.EXTRA_PRODUCT_NAME);
+        if (productName != null) {
+            mItemName.setText(productName);
+        }
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_create_new_item);
 
     }

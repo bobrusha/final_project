@@ -1,5 +1,6 @@
 package com.elegion.androidschool.finalproject;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.elegion.androidschool.finalproject.adapter.EntryAdapter;
 import com.elegion.androidschool.finalproject.db.Contract;
@@ -67,32 +68,8 @@ public class EntriesActivityFragment extends Fragment implements
         mSuggestionAdapter = new ArrayAdapter<String>(getActivity(), R.layout.view_product);
         mSearchTextView.setAdapter(mSuggestionAdapter);
 
-        Button addButton = (Button) view.findViewById(R.id.btn_add_new_entry);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                List<Product> products = MyApplication
-                        .getStorIOSQLite()
-                        .get().listOfObjects(Product.class)
-                        .withQuery(Query.<Product>builder()
-                                .table(Contract.ProductEntity.TABLE_NAME)
-                                .where(Contract.ProductEntity.COLUMN_NAME + " = ?")
-                                .whereArgs(mSearchTextView.getText().toString())
-                                .build())
-                        .prepare()
-                        .executeAsBlocking();
-                if (!products.isEmpty()) {
-                    Entry entry = new Entry(mListId, products.get(0).getId());
-                    MyApplication
-                            .getStorIOSQLite()
-                            .put()
-                            .object(entry)
-                            .prepare()
-                            .executeAsBlocking();
-                    getLoaderManager().restartLoader(LoadersId.ENTRY_LOADER, null, EntriesActivityFragment.this);
-                }
-            }
-        });
+        ImageButton addButton = (ImageButton) view.findViewById(R.id.btn_add_new_entry);
+        addButton.setOnClickListener(new OnSaveButtonClickListener());
     }
 
     @Override
@@ -169,4 +146,36 @@ public class EntriesActivityFragment extends Fragment implements
     }
 
 
+    public class OnSaveButtonClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            List<Product> products = MyApplication
+                    .getStorIOSQLite()
+                    .get()
+                    .listOfObjects(Product.class)
+                    .withQuery(Query.<Product>builder()
+                            .table(Contract.ProductEntity.TABLE_NAME)
+                            .where(Contract.ProductEntity.COLUMN_NAME + " = ?")
+                            .whereArgs(
+                                    mSearchTextView
+                                            .getText()
+                                            .toString())
+                            .build())
+                    .prepare()
+                    .executeAsBlocking();
+            if (!products.isEmpty()) {
+                Entry entry = new Entry(mListId, products.get(0).getId());
+                MyApplication
+                        .getStorIOSQLite()
+                        .put()
+                        .object(entry)
+                        .prepare()
+                        .executeAsBlocking();
+                getLoaderManager().restartLoader(LoadersId.ENTRY_LOADER, null, EntriesActivityFragment.this);
+            } else {
+                startActivity(new Intent(getActivity(), CreateNewProductActivity.class)
+                        .putExtra(Extras.EXTRA_PRODUCT_NAME, mSearchTextView.getText().toString()));
+            }
+        }
+    }
 }

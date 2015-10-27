@@ -6,10 +6,17 @@ package com.elegion.androidschool.finalproject.event;
 public class ListSelectedEvent {
     private long mListId;
     private String  mListName;
+    private boolean isLongClick = false;
 
     public ListSelectedEvent(long listId, String listName) {
         mListId = listId;
         mListName = listName;
+    }
+
+    public ListSelectedEvent(long listId, String listName, boolean isLongClick) {
+        mListId = listId;
+        mListName = listName;
+        this.isLongClick = isLongClick;
     }
 
     public long getListId() {
@@ -18,5 +25,9 @@ public class ListSelectedEvent {
 
     public String getListName() {
         return mListName;
+    }
+
+    public boolean isLongClick() {
+        return isLongClick;
     }
 }

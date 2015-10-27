@@ -35,5 +35,14 @@ public class ShoppingListViewHolder extends RecyclerView.ViewHolder {
                 MyBus.getInstance().post(new ListSelectedEvent(mShoppingListId, mTextView.getText().toString()));
             }
         });
+        mCardView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                v.setSelected(true);
+
+                MyBus.getInstance().post(new ListSelectedEvent(mShoppingListId, mTextView.getText().toString(), true));
+                return true;
+            }
+        });
     }
 }

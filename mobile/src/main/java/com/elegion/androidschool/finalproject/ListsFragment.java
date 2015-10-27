@@ -13,10 +13,12 @@ import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.elegion.androidschool.finalproject.adapter.ListToCardAdapter;
 import com.elegion.androidschool.finalproject.event.ListSelectedEvent;
@@ -32,7 +34,6 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private ListToCardAdapter mAdapter;
-
     private Toolbar mToolbar;
 
     public ListsFragment() {
@@ -56,6 +57,21 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
 
         mAdapter = new ListToCardAdapter();
         mRecyclerView.setAdapter(mAdapter);
+
+        ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP, ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                Toast.makeText(getActivity(), "qq", Toast.LENGTH_SHORT).show();
+                //TODO: delete from adapter
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_add_new_list);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -118,8 +134,13 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
     public void listSelectedEventAvailable(ListSelectedEvent event) {
         Log.d("qq", "Bus transport event to target methods");
 
-        startActivity(new Intent(getActivity(), EntriesActivity.class)
-                .putExtra(Extras.EXTRA_LIST_ID, event.getListId())
-                .putExtra(Extras.EXTRA_LIST_NAME, event.getListName()));
+        if (event.isLongClick()) {
+            //TODO: long click
+        } else {
+            startActivity(new Intent(getActivity(), EntriesActivity.class)
+                    .putExtra(Extras.EXTRA_LIST_ID, event.getListId())
+                    .putExtra(Extras.EXTRA_LIST_NAME, event.getListName()));
+        }
     }
+
 }

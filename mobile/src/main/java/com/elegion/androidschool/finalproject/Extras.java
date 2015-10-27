@@ -8,5 +8,6 @@ public interface Extras {
     String EXTRA_LIST_NAME = "list_name";
 
     String EXTRA_PRODUCT_ID = "product_id";
+    String EXTRA_PRODUCT_NAME = "product_name";
     String EXTRA_MARKET_ID = "market_id";
 }

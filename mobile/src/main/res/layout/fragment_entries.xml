@@ -24,11 +24,12 @@
             android:layout_height="wrap_content"
             android:minEms="10"/>
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btn_add_new_entry"
-            android:text="@string/btn_add_new_entry_to_list"/>
+            android:src="@drawable/ic_add_black_24dp"
+            style="?android:attr/borderlessButtonStyle"/>
 
     </LinearLayout>
 
