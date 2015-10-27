@@ -12,13 +12,16 @@ import com.pushtorefresh.storio.sqlite.annotations.StorIOSQLiteType;
 public class ShoppingList {
 
     @StorIOSQLiteColumn(name = Contract.ListEntity._ID, key = true)
-    long mId;
+    Long mId;
 
     @StorIOSQLiteColumn(name = Contract.ListEntity.COLUMN_NAME)
     String mName;
 
     @StorIOSQLiteColumn(name = Contract.ListEntity.COLUMN_DESCRIPTION)
     String mDescription;
+
+    @StorIOSQLiteColumn(name = Contract.ListEntity.COLUMN_MARKET_ID)
+    Long mMarketId;
 
     //must be package-level
     ShoppingList() {
@@ -50,5 +53,13 @@ public class ShoppingList {
 
     public void setDescription(String description) {
         mDescription = description;
+    }
+
+    public Long getMarketId() {
+        return mMarketId;
+    }
+
+    public void setMarketId(Long marketId) {
+        mMarketId = marketId;
     }
 }

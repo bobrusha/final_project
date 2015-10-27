@@ -63,4 +63,9 @@ public class Market {
     public void setLongitude(double longitude) {
         mLongitude = longitude;
     }
+
+    @Override
+    public String toString() {
+        return  mName;
+    }
 }

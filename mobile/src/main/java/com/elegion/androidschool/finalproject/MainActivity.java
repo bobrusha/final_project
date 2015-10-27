@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements
 
         mSharedPreferences = getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE);
         buildGoogleAoiClient();
-        getSupportLoaderManager().initLoader(LoadersId.GEOFENCES_LOADER, null, this);
     }
 
     @Override
@@ -190,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onConnected(Bundle bundle) {
         Log.v("qq", "Connected");
-        //addGeofences();
+        getSupportLoaderManager().initLoader(LoadersId.GEOFENCES_LOADER, null, this);
     }
 
     @Override
@@ -219,14 +218,10 @@ public class MainActivity extends AppCompatActivity implements
         Double lat;
         Double lng;
 
-        while (cursor.isAfterLast()) {
-            marketName = cursor.getString(cursor.getColumnIndex(Contract.MarketEntity.TABLE_NAME +
-                    "." + Contract.MarketEntity.COLUMN_NAME));
-            lat = cursor.getDouble(cursor.getColumnIndex(Contract.MarketEntity.TABLE_NAME +
-                    "." + Contract.MarketEntity.COLUMN_LATITUDE));
-
-            lng = cursor.getDouble(cursor.getColumnIndex(Contract.MarketEntity.TABLE_NAME +
-                    "." + Contract.MarketEntity.COLUMN_LONGITUDE));
+        while (!cursor.isAfterLast()) {
+            marketName = cursor.getString(cursor.getColumnIndex(Contract.MarketEntity.COLUMN_NAME));
+            lat = cursor.getDouble(cursor.getColumnIndex(Contract.MarketEntity.COLUMN_LATITUDE));
+            lng = cursor.getDouble(cursor.getColumnIndex(Contract.MarketEntity.COLUMN_LONGITUDE));
 
             mGeofenceArrayList.add(new Geofence.Builder()
                             .setRequestId(marketName)
@@ -235,6 +230,7 @@ public class MainActivity extends AppCompatActivity implements
                             .setExpirationDuration(Geofence.NEVER_EXPIRE)
                             .build()
             );
+            cursor.moveToNext();
         }
     }
 
