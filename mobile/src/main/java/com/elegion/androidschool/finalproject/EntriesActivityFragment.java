@@ -8,6 +8,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +18,11 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 
 import com.elegion.androidschool.finalproject.adapter.EntryAdapter;
+import com.elegion.androidschool.finalproject.adapter.EntryViewHolder;
 import com.elegion.androidschool.finalproject.db.Contract;
 import com.elegion.androidschool.finalproject.event.EntrySelectedEvent;
 import com.elegion.androidschool.finalproject.event.MyBus;
+import com.elegion.androidschool.finalproject.event.UpdateEntries;
 import com.elegion.androidschool.finalproject.loader.EntriesLoader;
 import com.elegion.androidschool.finalproject.loader.LoadersId;
 import com.elegion.androidschool.finalproject.loader.ProductsLoader;
@@ -63,6 +66,33 @@ public class EntriesActivityFragment extends Fragment implements
         mEntryAdapter = new EntryAdapter();
         mRecyclerView.setAdapter(mEntryAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(
+                ItemTouchHelper.UP,
+                ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT
+        ) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                if (direction == ItemTouchHelper.RIGHT) {
+                    EntryViewHolder vh = (EntryViewHolder) viewHolder;
+                    if (vh.isBought() == 0) {
+                        AddPriceDialog dialog = new AddPriceDialog();
+                        dialog.setEntryId(vh.getEntryId());
+                        dialog.setProductId(vh.getProductId());
+                        dialog.setSetIsBought(vh.isBought() + 1);
+                        dialog.show(getFragmentManager(), "dialog");
+                    }
+                    //TODO: write raw update query
+
+                }
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
         mSearchTextView = (AutoCompleteTextView) view.findViewById(R.id.auto_complete_text_view_find_product);
         mSuggestionAdapter = new ArrayAdapter<String>(getActivity(), R.layout.view_product);
@@ -116,7 +146,6 @@ public class EntriesActivityFragment extends Fragment implements
                 mSuggestionAdapter.clear();
                 mSuggestionAdapter.addAll(arr);
         }
-
     }
 
     @Override
@@ -143,6 +172,11 @@ public class EntriesActivityFragment extends Fragment implements
         dialog.setEntryId(event.getEntryId());
         dialog.setProductId(event.getProductId());
         dialog.show(getFragmentManager(), "dialog");
+    }
+
+    @Subscribe
+    public void updateEntries(UpdateEntries event) {
+        getLoaderManager().restartLoader(LoadersId.ENTRY_LOADER, null, EntriesActivityFragment.this);
     }
 
 
@@ -172,6 +206,7 @@ public class EntriesActivityFragment extends Fragment implements
                         .prepare()
                         .executeAsBlocking();
                 getLoaderManager().restartLoader(LoadersId.ENTRY_LOADER, null, EntriesActivityFragment.this);
+
             } else {
                 startActivity(new Intent(getActivity(), CreateNewProductActivity.class)
                         .putExtra(Extras.EXTRA_PRODUCT_NAME, mSearchTextView.getText().toString()));

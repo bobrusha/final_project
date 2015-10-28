@@ -18,13 +18,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.elegion.androidschool.finalproject.adapter.ListToCardAdapter;
+import com.elegion.androidschool.finalproject.adapter.ShoppingListViewHolder;
+import com.elegion.androidschool.finalproject.db.Contract;
 import com.elegion.androidschool.finalproject.event.ListSelectedEvent;
 import com.elegion.androidschool.finalproject.event.MyBus;
 import com.elegion.androidschool.finalproject.loader.ListsLoader;
 import com.elegion.androidschool.finalproject.loader.LoadersId;
+import com.pushtorefresh.storio.sqlite.queries.DeleteQuery;
 import com.squareup.otto.Subscribe;
 
 /**
@@ -58,7 +60,8 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
         mAdapter = new ListToCardAdapter();
         mRecyclerView.setAdapter(mAdapter);
 
-        ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP, ItemTouchHelper.RIGHT) {
+        ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(
+                ItemTouchHelper.RIGHT, ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
@@ -66,8 +69,22 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                Toast.makeText(getActivity(), "qq", Toast.LENGTH_SHORT).show();
-                //TODO: delete from adapter
+                //TODO: snackbar
+                ShoppingListViewHolder shoppingListVH = (ShoppingListViewHolder) viewHolder;
+                Long listId = shoppingListVH.getShoppingListId();
+                MyApplication
+                        .getStorIOSQLite()
+                        .delete()
+                        .byQuery(
+                                DeleteQuery
+                                        .builder()
+                                        .table(Contract.ListEntity.TABLE_NAME)
+                                        .where(Contract.ListEntity._ID + " = ?")
+                                        .whereArgs(listId)
+                                        .build())
+                        .prepare()
+                        .executeAsBlocking();
+                getLoaderManager().restartLoader(LoadersId.LISTS_LOADER, null, ListsFragment.this);
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
@@ -97,7 +114,6 @@ public class ListsFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         getLoaderManager().initLoader(LoadersId.LISTS_LOADER, null, this);
     }
 

@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.elegion.androidschool.finalproject.db.Contract;
+import com.elegion.androidschool.finalproject.event.MyBus;
+import com.elegion.androidschool.finalproject.event.UpdateEntries;
 import com.elegion.androidschool.finalproject.model.Price;
 import com.pushtorefresh.storio.sqlite.operations.delete.DeleteResult;
 import com.pushtorefresh.storio.sqlite.operations.put.PutResult;
@@ -23,13 +25,19 @@ import com.pushtorefresh.storio.sqlite.queries.RawQuery;
  */
 public class AddPriceDialog extends DialogFragment {
     public static final String UPDATE_QUERY = "UPDATE " + Contract.EntryEntity.TABLE_NAME +
-            " SET " + Contract.EntryEntity.COLUM_IS_BOUGHT + " = 1, " +
-            Contract.EntryEntity.COLUMN_PRICE_ID + "= ? " +
+            " SET " +
+            Contract.EntryEntity.COLUMN_PRICE_ID + " = ?, " +
+            Contract.EntryEntity.COLUM_IS_BOUGHT + " = ? " +
             "WHERE " + Contract.EntryEntity._ID + " = ?;";
 
     private EditText mEditTextPrice;
     private long mProductId;
     private long mEntryId;
+    private int mSetIsBought;
+
+    public void setSetIsBought(int setIsBought) {
+        mSetIsBought = setIsBought;
+    }
 
     public void setEntryId(long entryId) {
         mEntryId = entryId;
@@ -107,7 +115,7 @@ public class AddPriceDialog extends DialogFragment {
                     .withQuery(RawQuery
                             .builder()
                             .query(UPDATE_QUERY)
-                            .args(mEntryId, insertedPriceId)
+                            .args(mEntryId, mSetIsBought, insertedPriceId)
                             .build())
                     .prepare()
                     .executeAsBlocking();
@@ -124,6 +132,7 @@ public class AddPriceDialog extends DialogFragment {
                     .executeAsBlocking();
             cursor.moveToFirst();
             Log.v("qq", "" + cursor.getLong(cursor.getColumnIndex(Contract.EntryEntity.COLUMN_PRICE_ID)));
+            MyBus.getInstance().post(new UpdateEntries(0));
 
         }
     }
