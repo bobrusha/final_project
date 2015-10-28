@@ -131,7 +131,7 @@ public class AddPriceDialog extends DialogFragment {
                     .prepare()
                     .executeAsBlocking();
             cursor.moveToFirst();
-            Log.v("qq", "" + cursor.getLong(cursor.getColumnIndex(Contract.EntryEntity.COLUMN_PRICE_ID)));
+            //Log.v("qq", "" + cursor.getLong(cursor.getColumnIndex(Contract.EntryEntity.COLUMN_PRICE_ID)));
             MyBus.getInstance().post(new UpdateEntries(0));
         }
     }

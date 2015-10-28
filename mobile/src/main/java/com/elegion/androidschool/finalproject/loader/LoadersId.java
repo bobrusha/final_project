@@ -8,6 +8,7 @@ public interface LoadersId {
     int SUGGESTION_LOADER = 21;
     int LISTS_LOADER = 10;
 
+    int ALL_PRICES_LOADER = 30;
     int MAX_PRICE_LOADER = 31;
     int MIN_PRICE_LOADER = 32;
 
