@@ -35,7 +35,7 @@ public class EntryViewHolder extends RecyclerView.ViewHolder {
         mTextView.setText(cursor.getString(cursor.getColumnIndex(Contract.ProductEntity.COLUMN_NAME)), TextView.BufferType.SPANNABLE);
         Spannable spannable = (Spannable) mTextView.getText();
         if (isBought > 0) {
-            spannable.setSpan(new StrikethroughSpan(), 0 , mTextView.getText().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannable.setSpan(new StrikethroughSpan(), 0, mTextView.getText().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,9 +53,11 @@ public class EntryViewHolder extends RecyclerView.ViewHolder {
     public int isBought() {
         return mEntryModel.getIsBought();
     }
+
     public Long getEntryId() {
         return mEntryModel.getId();
     }
+
     public Long getProductId() {
         return mEntryModel.getProductId();
     }

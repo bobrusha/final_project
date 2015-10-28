@@ -1,5 +1,6 @@
 package com.elegion.androidschool.finalproject;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -8,23 +9,29 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.elegion.androidschool.finalproject.adapter.ProductViewHolder;
 import com.elegion.androidschool.finalproject.adapter.ProductsAdapter;
+import com.elegion.androidschool.finalproject.db.Contract;
 import com.elegion.androidschool.finalproject.event.MyBus;
 import com.elegion.androidschool.finalproject.event.ProductSelectedEvent;
+import com.elegion.androidschool.finalproject.loader.LoadersId;
 import com.elegion.androidschool.finalproject.loader.ProductsLoader;
+import com.pushtorefresh.storio.sqlite.queries.DeleteQuery;
 import com.squareup.otto.Subscribe;
 
 
-public class ProductsListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class ProductsListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private RecyclerView mItemsListView;
     private RecyclerView.LayoutManager mLayoutManager;
     private ProductsAdapter mProductsAdapter;
@@ -54,9 +61,76 @@ public class ProductsListFragment extends Fragment implements LoaderManager.Load
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mItemsListView.setLayoutManager(mLayoutManager);
-
         mProductsAdapter = new ProductsAdapter();
         mItemsListView.setAdapter(mProductsAdapter);
+        ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                final ProductViewHolder productViewHolder = (ProductViewHolder) viewHolder;
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                final long productId = productViewHolder.getId();
+                builder.setTitle(R.string.delete_product_dialog_title)
+                        .setPositiveButton(R.string.delete_product_positive_btn, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //Deletes entries associated with product
+                                MyApplication
+                                        .getStorIOSQLite()
+                                        .delete()
+                                        .byQuery(
+                                                DeleteQuery
+                                                        .builder()
+                                                        .table(Contract.EntryEntity.TABLE_NAME)
+                                                        .where(Contract.EntryEntity.COLUMN_PRODUCT_FK + " = ?")
+                                                        .whereArgs(productId)
+                                                        .build()
+                                        ).prepare()
+                                        .executeAsBlocking();
+                                //Deletes prices associated with product
+                                MyApplication
+                                        .getStorIOSQLite()
+                                        .delete()
+                                        .byQuery(
+                                                DeleteQuery
+                                                        .builder()
+                                                        .table(Contract.PriceEntity.TABLE_NAME)
+                                                        .where(Contract.PriceEntity.COLUMN_PRODUCT_FK + " = ?")
+                                                        .whereArgs(productId)
+                                                        .build()
+                                        ).prepare()
+                                        .executeAsBlocking();
+                                //Deletes products
+                                MyApplication
+                                        .getStorIOSQLite()
+                                        .delete()
+                                        .byQuery(
+                                                DeleteQuery
+                                                        .builder()
+                                                        .table(Contract.ProductEntity.TABLE_NAME)
+                                                        .where(Contract.ProductEntity._ID + " = ?")
+                                                        .whereArgs(productViewHolder.getId())
+                                                        .build())
+                                        .prepare()
+                                        .executeAsBlocking();
+                                getLoaderManager()
+                                        .restartLoader(LoadersId.PRODUCTS_LOADER, null, ProductsListFragment.this);
+                            }
+                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mProductsAdapter.notifyDataSetChanged();
+                    }
+                }).create().show();
+            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(mItemsListView);
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_add_new_item);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +158,7 @@ public class ProductsListFragment extends Fragment implements LoaderManager.Load
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        getLoaderManager().initLoader(R.id.fragment_items_list, null, this);
+        getLoaderManager().initLoader(LoadersId.PRODUCTS_LOADER, null, this);
     }
 
     @Override

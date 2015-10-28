@@ -45,7 +45,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 
         final String SQL_CREATE_PRICE_TABLE = "CREATE TABLE " + Contract.PriceEntity.TABLE_NAME + " (" +
                 Contract.PriceEntity._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                Contract.PriceEntity.COLUMN_PRODUCT_FK+ " INTEGER REFERENCES " +
+                Contract.PriceEntity.COLUMN_PRODUCT_FK + " INTEGER REFERENCES " +
                 Contract.ProductEntity.TABLE_NAME + ", " +
                 Contract.PriceEntity.COLUMN_VALUE + " REAL " +
                 " );";

@@ -66,6 +66,6 @@ public class Market {
 
     @Override
     public String toString() {
-        return  mName;
+        return mName;
     }
 }

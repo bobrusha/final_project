@@ -23,6 +23,7 @@ public class EntryAdapter extends RecyclerView.Adapter<EntryViewHolder> {
         Log.v("qq", "In EntryAdapter cursor was swapped");
         return oldCursor;
     }
+
     @Override
     public EntryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         TextView v = (TextView) LayoutInflater.from(parent.getContext())

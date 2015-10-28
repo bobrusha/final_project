@@ -87,7 +87,6 @@ public class EntriesActivityFragment extends Fragment implements
                         dialog.setSetIsBought(vh.isBought() + 1);
                         dialog.show(getFragmentManager(), "dialog");
                     }
-                    //TODO: write raw update query
                     if (vh.isBought() == 1) {
                         final String updateQuery = "UPDATE " + Contract.EntryEntity.TABLE_NAME +
                                 " SET " +
@@ -108,7 +107,6 @@ public class EntriesActivityFragment extends Fragment implements
                     }
                 }
                 if (direction == ItemTouchHelper.LEFT) {
-                    //TODO: delete fro db
                     Entry model = vh.getEntryModel();
                     if (model.getPriceId() != null) {
                         MyApplication

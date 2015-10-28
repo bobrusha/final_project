@@ -31,7 +31,7 @@ public class InfoAboutMarketLoader extends AsyncTaskLoader<Cursor> {
 
     @Override
     public Cursor loadInBackground() {
-        Log.v(Constants.LOG_TAG, "MarketId" + mMarketId );
+        Log.v(Constants.LOG_TAG, "MarketId" + mMarketId);
         return MyApplication.getStorIOSQLite()
                 .get()
                 .cursor()

@@ -15,4 +15,6 @@ public interface LoadersId {
     int INFO_ABOUT_MARKET_LOADER = 41;
 
     int GEOFENCES_LOADER = 50;
+
+    int PRODUCTS_LOADER = 60;
 }

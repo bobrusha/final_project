@@ -35,6 +35,8 @@
 
     <!--Products activity -->
     <string name="products_toolbar_title">Products</string>
+    <string name="delete_product_dialog_title">Delete </string>
+    <string name="delete_product_positive_btn">Delete</string>
 
     <!-- Statistics activity -->
     <string name="title_activity_product_statistics">Statistics</string>

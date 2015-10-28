@@ -31,4 +31,8 @@ public class ProductViewHolder extends RecyclerView.ViewHolder {
             }
         });
     }
+
+    public long getId() {
+        return mId;
+    }
 }

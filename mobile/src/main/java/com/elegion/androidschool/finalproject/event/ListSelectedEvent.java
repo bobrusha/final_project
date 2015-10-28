@@ -5,7 +5,7 @@ package com.elegion.androidschool.finalproject.event;
  */
 public class ListSelectedEvent {
     private long mListId;
-    private String  mListName;
+    private String mListName;
     private boolean isLongClick = false;
 
     public ListSelectedEvent(long listId, String listName) {

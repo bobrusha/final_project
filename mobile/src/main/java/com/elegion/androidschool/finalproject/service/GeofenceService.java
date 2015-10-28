@@ -26,7 +26,9 @@ public class GeofenceService extends IntentService {
     public static final String TITLE = "QQ";
     public static final String NAME = "GeofenceIntentService";
 
-    public GeofenceService(){super(NAME);}
+    public GeofenceService() {
+        super(NAME);
+    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -39,7 +41,7 @@ public class GeofenceService extends IntentService {
         Log.v("qq", "in onTransitionHandleIntent");
         GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
         if (geofencingEvent.hasError()) {
-            Log.v("qq" , "event has error");
+            Log.v("qq", "event has error");
             return;
         }
 

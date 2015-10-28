@@ -16,7 +16,7 @@ public class InfoAboutMarket extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-        switch (itemId){
+        switch (itemId) {
             case android.R.id.home:
                 onBackPressed();
                 return true;

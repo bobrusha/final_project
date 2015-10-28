@@ -203,10 +203,10 @@ public class InfoAboutMarketFragment extends Fragment implements
         @Override
         public void onClick(View v) {
             String marketName = mMarketNameEditText.getText().toString();
-            LatLng position =  mMarker.getPosition();
+            LatLng position = mMarker.getPosition();
 
             if (marketName.isEmpty()) {
-            //TODO: show dialog
+                //TODO: show dialog
                 Log.v(Constants.LOG_TAG, "Name is empty");
                 return;
             }
@@ -216,7 +216,7 @@ public class InfoAboutMarketFragment extends Fragment implements
                 return;
             }
             if (mMarketModel == null) {
-             mMarketModel = new Market(marketName);
+                mMarketModel = new Market(marketName);
             }
             mMarketModel.setName(marketName);
             mMarketModel.setLatitude(position.latitude);
