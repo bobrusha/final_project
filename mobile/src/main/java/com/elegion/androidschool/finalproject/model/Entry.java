@@ -73,4 +73,15 @@ public class Entry {
     public int getIsBought() {
         return mIsBought;
     }
+
+    @Override
+    public String toString() {
+        return "Entry{" +
+                "mId=" + mId +
+                ", mListId=" + mListId +
+                ", mProductId=" + mProductId +
+                ", mPriceId=" + mPriceId +
+                ", mIsBought=" + mIsBought +
+                '}';
+    }
 }

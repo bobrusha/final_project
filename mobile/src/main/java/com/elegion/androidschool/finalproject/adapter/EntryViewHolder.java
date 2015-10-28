@@ -25,12 +25,13 @@ public class EntryViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindItem(final Cursor cursor) {
-        Long entryId = cursor.getLong(cursor.getColumnIndex(Contract.EntryEntity._ID));
-        Long productId = cursor.getLong(cursor.getColumnIndex(Contract.EntryEntity.COLUMN_PRODUCT_FK));
-        Long priceId = cursor.getLong(cursor.getColumnIndex(Contract.EntryEntity.COLUMN_PRICE_ID));
-        int isBought = cursor.getInt(cursor.getColumnIndex(Contract.EntryEntity.COLUM_IS_BOUGHT));
+        Log.v(Constants.LOG_TAG, "qq");
+        Long entryId = cursor.getLong(cursor.getColumnIndex(Contract.EntryEntity.TABLE_NAME + "." + Contract.EntryEntity._ID));
+        Long productId = cursor.getLong(cursor.getColumnIndex(Contract.EntryEntity.TABLE_NAME + "." + Contract.EntryEntity.COLUMN_PRODUCT_FK));
+        Long priceId = cursor.getLong(cursor.getColumnIndex(Contract.EntryEntity.TABLE_NAME + "." + Contract.EntryEntity.COLUMN_PRICE_ID));
+        int isBought = cursor.getInt(cursor.getColumnIndex(Contract.EntryEntity.TABLE_NAME + "." + Contract.EntryEntity.COLUM_IS_BOUGHT));
+        Log.v(Constants.LOG_TAG, "In bind item " + entryId);
         mEntryModel = new Entry(entryId, productId, priceId, isBought);
-
 
         mTextView.setText(cursor.getString(cursor.getColumnIndex(Contract.ProductEntity.COLUMN_NAME)), TextView.BufferType.SPANNABLE);
         Spannable spannable = (Spannable) mTextView.getText();
@@ -48,18 +49,6 @@ public class EntryViewHolder extends RecyclerView.ViewHolder {
 
     public Entry getEntryModel() {
         return mEntryModel;
-    }
-
-    public int isBought() {
-        return mEntryModel.getIsBought();
-    }
-
-    public Long getEntryId() {
-        return mEntryModel.getId();
-    }
-
-    public Long getProductId() {
-        return mEntryModel.getProductId();
     }
 
 }

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.elegion.androidschool.finalproject.adapter.Constants;
 import com.elegion.androidschool.finalproject.db.Contract;
 import com.elegion.androidschool.finalproject.event.MyBus;
 import com.elegion.androidschool.finalproject.event.UpdateEntries;
@@ -71,6 +72,7 @@ public class AddPriceDialog extends DialogFragment {
          */
         @Override
         public void onClick(DialogInterface dialog, int which) {
+            Log.v(Constants.LOG_TAG, "EntryId" + mEntryId);
             Cursor cursor = MyApplication.getStorIOSQLite()
                     .get()
                     .cursor()
@@ -115,23 +117,10 @@ public class AddPriceDialog extends DialogFragment {
                     .withQuery(RawQuery
                             .builder()
                             .query(UPDATE_QUERY)
-                            .args(mEntryId, mSetIsBought, insertedPriceId)
+                            .args(insertedPriceId, mSetIsBought, mEntryId)
                             .build())
                     .prepare()
                     .executeAsBlocking();
-            cursor = MyApplication.getStorIOSQLite()
-                    .get()
-                    .cursor()
-                    .withQuery(Query.builder()
-                            .table(Contract.EntryEntity.TABLE_NAME)
-                            .where(Contract.EntryEntity._ID + " = ?")
-                            .whereArgs(mEntryId)
-                            .limit(1)
-                            .build())
-                    .prepare()
-                    .executeAsBlocking();
-            cursor.moveToFirst();
-            //Log.v("qq", "" + cursor.getLong(cursor.getColumnIndex(Contract.EntryEntity.COLUMN_PRICE_ID)));
             MyBus.getInstance().post(new UpdateEntries(0));
         }
     }

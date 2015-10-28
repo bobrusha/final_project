@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 
+import com.elegion.androidschool.finalproject.adapter.Constants;
 import com.elegion.androidschool.finalproject.adapter.EntryAdapter;
 import com.elegion.androidschool.finalproject.adapter.EntryViewHolder;
 import com.elegion.androidschool.finalproject.db.Contract;
@@ -78,16 +79,19 @@ public class EntriesActivityFragment extends Fragment implements
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                EntryViewHolder vh = (EntryViewHolder) viewHolder;
+                final EntryViewHolder vh = (EntryViewHolder) viewHolder;
+                final Entry model = vh.getEntryModel();
                 if (direction == ItemTouchHelper.RIGHT) {
-                    if (vh.isBought() == 0) {
+                    if (model.getIsBought() != 1) {
+                        Log.v(Constants.LOG_TAG, "not bought " + model.toString());
                         AddPriceDialog dialog = new AddPriceDialog();
-                        dialog.setEntryId(vh.getEntryId());
-                        dialog.setProductId(vh.getProductId());
-                        dialog.setSetIsBought(vh.isBought() + 1);
+                        dialog.setEntryId(model.getId());
+                        dialog.setProductId(model.getProductId());
+                        dialog.setSetIsBought(model.getIsBought() + 1);
                         dialog.show(getFragmentManager(), "dialog");
                     }
-                    if (vh.isBought() == 1) {
+                    if (model.getIsBought() == 1) {
+                        Log.v(Constants.LOG_TAG, "bought " + model.toString());
                         final String updateQuery = "UPDATE " + Contract.EntryEntity.TABLE_NAME +
                                 " SET " +
                                 Contract.EntryEntity.COLUM_IS_BOUGHT + " = ? " +
@@ -99,7 +103,7 @@ public class EntriesActivityFragment extends Fragment implements
                                         RawQuery
                                                 .builder()
                                                 .query(updateQuery)
-                                                .args(0, vh.getEntryId())
+                                                .args(0, model.getId())
                                                 .build()
                                 ).prepare()
                                 .executeAsBlocking();
@@ -107,7 +111,6 @@ public class EntriesActivityFragment extends Fragment implements
                     }
                 }
                 if (direction == ItemTouchHelper.LEFT) {
-                    Entry model = vh.getEntryModel();
                     if (model.getPriceId() != null) {
                         MyApplication
                                 .getStorIOSQLite()
@@ -138,7 +141,7 @@ public class EntriesActivityFragment extends Fragment implements
         mSearchTextView.setAdapter(mSuggestionAdapter);
 
         ImageButton addButton = (ImageButton) view.findViewById(R.id.btn_add_new_entry);
-        addButton.setOnClickListener(new OnSaveButtonClickListener());
+        addButton.setOnClickListener(new OnAddButtonClickListener());
     }
 
     @Override
@@ -223,7 +226,7 @@ public class EntriesActivityFragment extends Fragment implements
     }
 
 
-    public class OnSaveButtonClickListener implements View.OnClickListener {
+    public class OnAddButtonClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             List<Product> products = MyApplication
