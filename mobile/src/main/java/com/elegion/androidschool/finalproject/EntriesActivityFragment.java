@@ -29,6 +29,7 @@ import com.elegion.androidschool.finalproject.loader.ProductsLoader;
 import com.elegion.androidschool.finalproject.model.Entry;
 import com.elegion.androidschool.finalproject.model.Product;
 import com.pushtorefresh.storio.sqlite.queries.Query;
+import com.pushtorefresh.storio.sqlite.queries.RawQuery;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -77,8 +78,8 @@ public class EntriesActivityFragment extends Fragment implements
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                EntryViewHolder vh = (EntryViewHolder) viewHolder;
                 if (direction == ItemTouchHelper.RIGHT) {
-                    EntryViewHolder vh = (EntryViewHolder) viewHolder;
                     if (vh.isBought() == 0) {
                         AddPriceDialog dialog = new AddPriceDialog();
                         dialog.setEntryId(vh.getEntryId());
@@ -87,7 +88,47 @@ public class EntriesActivityFragment extends Fragment implements
                         dialog.show(getFragmentManager(), "dialog");
                     }
                     //TODO: write raw update query
-
+                    if (vh.isBought() == 1) {
+                        final String updateQuery = "UPDATE " + Contract.EntryEntity.TABLE_NAME +
+                                " SET " +
+                                Contract.EntryEntity.COLUM_IS_BOUGHT + " = ? " +
+                                "WHERE " + Contract.EntryEntity._ID + " = ?;";
+                        MyApplication
+                                .getStorIOSQLite()
+                                .executeSQL()
+                                .withQuery(
+                                        RawQuery
+                                                .builder()
+                                                .query(updateQuery)
+                                                .args(0, vh.getEntryId())
+                                                .build()
+                                ).prepare()
+                                .executeAsBlocking();
+                        getLoaderManager().restartLoader(LoadersId.ENTRY_LOADER, null, EntriesActivityFragment.this);
+                    }
+                }
+                if (direction == ItemTouchHelper.LEFT) {
+                    //TODO: delete fro db
+                    Entry model = vh.getEntryModel();
+                    if (model.getPriceId() != null) {
+                        MyApplication
+                                .getStorIOSQLite()
+                                .executeSQL()
+                                .withQuery(RawQuery
+                                                .builder()
+                                                .query("DELETE FROM " + Contract.PriceEntity.TABLE_NAME + " WHERE " + Contract.PriceEntity._ID + " = ?")
+                                                .args(model.getPriceId())
+                                                .build()
+                                ).prepare()
+                                .executeAsBlocking();
+                    }
+                    MyApplication
+                            .getStorIOSQLite()
+                            .delete()
+                            .object(vh.getEntryModel())
+                            .prepare()
+                            .executeAsBlocking();
+                    getLoaderManager().restartLoader(LoadersId.ENTRY_LOADER, null, EntriesActivityFragment.this);
                 }
             }
         };
@@ -176,7 +217,11 @@ public class EntriesActivityFragment extends Fragment implements
 
     @Subscribe
     public void updateEntries(UpdateEntries event) {
-        getLoaderManager().restartLoader(LoadersId.ENTRY_LOADER, null, EntriesActivityFragment.this);
+        if (event.getId() == 0) {
+            getLoaderManager().restartLoader(LoadersId.ENTRY_LOADER, null, EntriesActivityFragment.this);
+        } else {
+            mEntryAdapter.notifyDataSetChanged();
+        }
     }
 
 

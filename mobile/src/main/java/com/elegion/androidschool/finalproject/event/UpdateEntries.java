@@ -9,4 +9,8 @@ public class UpdateEntries {
     public UpdateEntries(int id) {
         mId = id;
     }
+
+    public int getId() {
+        return mId;
+    }
 }

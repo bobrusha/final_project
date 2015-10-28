@@ -46,6 +46,10 @@ public class EntryViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
+    public Entry getEntryModel() {
+        return mEntryModel;
+    }
+
     public int isBought() {
         return mEntryModel.getIsBought();
     }

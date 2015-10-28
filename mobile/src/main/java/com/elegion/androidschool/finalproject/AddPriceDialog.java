@@ -59,7 +59,7 @@ public class AddPriceDialog extends DialogFragment {
                 .setNegativeButton(R.string.add_price_dialog_negative_button, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //do nothing
+                        MyBus.getInstance().post(new UpdateEntries(1));
                     }
                 })
                 .create();
@@ -133,7 +133,6 @@ public class AddPriceDialog extends DialogFragment {
             cursor.moveToFirst();
             Log.v("qq", "" + cursor.getLong(cursor.getColumnIndex(Contract.EntryEntity.COLUMN_PRICE_ID)));
             MyBus.getInstance().post(new UpdateEntries(0));
-
         }
     }
 }
